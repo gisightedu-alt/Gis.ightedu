@@ -1,0 +1,2531 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GIS.ight — Where Data Meets The Earth</title>
+  <meta name="description" content="Platform edukasi, informasi, dan eksplorasi Penginderaan Jauh, GIS, dan Analisis Spasial untuk profesional dan akademisi Indonesia." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+  /* ============================================================
+     RESET & TOKENS
+  ============================================================ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy:        #0A1628;
+    --navy-mid:    #0D1F3C;
+    --navy-light:  #14274E;
+    --blue:        #1A6FC4;
+    --blue-light:  #2E9CFF;
+    --teal:        #00C9A7;
+    --green:       #4CAF50;
+    --green-light: #6FCC6F;
+    --gold:        #F5C518;
+    --white:       #FFFFFF;
+    --gray-50:     #F8FAFC;
+    --gray-100:    #F1F5F9;
+    --gray-200:    #E2E8F0;
+    --gray-400:    #94A3B8;
+    --gray-600:    #475569;
+    --gray-800:    #1E293B;
+    --font-head:   'Space Grotesk', sans-serif;
+    --font-body:   'Inter', sans-serif;
+    --r-sm:  6px;
+    --r-md:  10px;
+    --r-lg:  16px;
+    --r-xl:  24px;
+    --sh-sm: 0 1px 4px rgba(0,0,0,.08);
+    --sh-md: 0 4px 16px rgba(0,0,0,.12);
+    --sh-lg: 0 8px 32px rgba(0,0,0,.2);
+    --t:     .22s ease;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-body);
+    background: var(--white);
+    color: var(--gray-800);
+    font-size: 15px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  a { text-decoration: none; color: inherit; }
+  img { max-width: 100%; display: block; }
+  button { cursor: pointer; font-family: inherit; border: none; }
+
+  /* ============================================================
+     UTILITIES
+  ============================================================ */
+  .container { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+  .section-pad    { padding: 88px 0; }
+  .section-pad-sm { padding: 56px 0; }
+  .tag {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    letter-spacing: .5px; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 20px;
+  }
+  .tag-blue   { background:#dbeafe; color:#1d4ed8; }
+  .tag-teal   { background:#ccfbf1; color:#0f766e; }
+  .tag-green  { background:#dcfce7; color:#15803d; }
+  .tag-purple { background:#ede9fe; color:#6d28d9; }
+  .tag-amber  { background:#fef3c7; color:#b45309; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 24px; border-radius: var(--r-md);
+    font-size: 14px; font-weight: 600;
+    transition: all var(--t); white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--blue); color: #fff;
+    box-shadow: 0 2px 10px rgba(26,111,196,.38);
+  }
+  .btn-primary:hover { background: #155fa0; transform: translateY(-1px); box-shadow: 0 4px 16px rgba(26,111,196,.45); }
+  .btn-white {
+    background: rgba(255,255,255,.12); color: #fff;
+    border: 1.5px solid rgba(255,255,255,.3);
+    backdrop-filter: blur(4px);
+  }
+  .btn-white:hover { background: rgba(255,255,255,.22); }
+  .btn-outline {
+    background: transparent; color: var(--blue);
+    border: 1.5px solid var(--blue);
+  }
+  .btn-outline:hover { background: var(--blue); color: #fff; }
+  .btn-sm { padding: 8px 16px; font-size: 13px; }
+
+  .link-arrow {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 13.5px; font-weight: 600; color: var(--blue);
+    transition: gap var(--t);
+  }
+  .link-arrow:hover { gap: 8px; }
+
+  .section-header { text-align: center; margin-bottom: 52px; }
+  .section-header .eyebrow {
+    font-size: 12px; font-weight: 700; letter-spacing: 1.2px;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 10px;
+  }
+  .section-header h2 {
+    font-family: var(--font-head); font-size: 34px; font-weight: 700;
+    color: var(--gray-800); margin-bottom: 14px; line-height: 1.2;
+  }
+  .section-header p {
+    font-size: 16px; color: var(--gray-600);
+    max-width: 540px; margin: 0 auto; line-height: 1.75;
+  }
+
+  /* ============================================================
+     NAVBAR
+  ============================================================ */
+  #navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    transition: background var(--t), box-shadow var(--t);
+    /* starts transparent over hero */
+    background: transparent;
+  }
+  #navbar.scrolled {
+    background: rgba(10,22,40,.96);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 1px 0 rgba(255,255,255,.06);
+  }
+  .nav-inner {
+    display: flex; align-items: center; height: 68px;
+    gap: 4px;
+  }
+
+  /* Logo */
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    margin-right: auto; flex-shrink: 0;
+    text-decoration: none;
+  }
+  .nav-logo-img {
+    width: 40px; height: 40px; border-radius: 10px;
+    object-fit: contain;
+    background: rgba(255,255,255,.06);
+    padding: 3px;
+    flex-shrink: 0;
+  }
+  .nav-logo-text {
+    font-family: var(--font-head); font-size: 20px; font-weight: 700;
+    line-height: 1;
+  }
+  .nav-logo-text .gis  { color: #1A6FC4; }
+  .nav-logo-text .dot  { color: var(--gold); }
+  .nav-logo-text .ight { color: var(--green); }
+  .nav-tagline {
+    font-size: 9.5px; font-weight: 400; color: rgba(255,255,255,.45);
+    letter-spacing: .3px; margin-top: 1px;
+  }
+
+  .nav-links { display: flex; gap: 2px; }
+  .nav-links a {
+    font-size: 13.5px; font-weight: 500; color: rgba(255,255,255,.75);
+    padding: 7px 13px; border-radius: var(--r-sm);
+    transition: all var(--t);
+  }
+  .nav-links a:hover  { color: #fff; background: rgba(255,255,255,.09); }
+  .nav-links a.active { color: var(--teal); }
+
+  .nav-cta { margin-left: 12px; }
+
+  /* Hamburger */
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; padding: 6px; margin-left: 8px;
+  }
+  .hamburger span {
+    display: block; width: 22px; height: 2px;
+    background: #fff; border-radius: 2px;
+    transition: all .3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  .mobile-menu {
+    display: none; position: fixed;
+    top: 68px; left: 0; right: 0; bottom: 0;
+    background: rgba(10,22,40,.98);
+    padding: 16px 24px 32px; z-index: 999;
+    overflow-y: auto;
+  }
+  .mobile-menu.open { display: flex; flex-direction: column; }
+  .mobile-menu a {
+    color: rgba(255,255,255,.8); padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    font-size: 16px; font-weight: 500;
+  }
+  .mobile-menu .btn { margin-top: 20px; justify-content: center; }
+
+  /* ============================================================
+     HERO — fullscreen earth photo
+  ============================================================ */
+  #hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex; align-items: center;
+    overflow: hidden;
+    background: var(--navy);
+  }
+
+  /* Satellite hero image — hanya tampil jika ada foto (opsional) */
+  .hero-bg-img {
+    position: absolute; inset: 0; z-index: 1;
+    background: url('images/hero-bg.png') center center / cover no-repeat;
+    opacity: 0; /* tersembunyi — canvas jadi background utama */
+  }
+
+  /* Canvas animasi bumi — menggantikan foto */
+  #heroCanvas {
+    position: absolute; inset: 0; z-index: 0;
+    width: 100%; height: 100%;
+    display: block;
+    pointer-events: none;
+  }
+
+  /* Overlay gradien — teks tetap terbaca */
+  .hero-overlay {
+    position: absolute; inset: 0; z-index: 1;
+    background:
+      linear-gradient(to right,
+        rgba(5,10,20,.72) 0%,
+        rgba(5,10,20,.38) 50%,
+        rgba(5,10,20,.08) 80%,
+        transparent 100%),
+      linear-gradient(to top,
+        rgba(5,10,20,.65) 0%,
+        rgba(5,10,20,.12) 35%,
+        transparent 65%),
+      linear-gradient(to bottom,
+        rgba(5,10,20,.55) 0%,
+        transparent 20%);
+  }
+  .hero-vignette { position: absolute; inset: 0; z-index: 2; background: transparent; }
+
+  /* Koordinat grid overlay — motif khas GIS */
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 2; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(0,201,167,.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,201,167,.04) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.6) 40%, rgba(0,0,0,.3) 70%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.6) 40%, rgba(0,0,0,.3) 70%, transparent 100%);
+  }
+
+  /* Scanline subtle */
+  .hero-scanline {
+    position: absolute; inset: 0; z-index: 3; pointer-events: none;
+    background: repeating-linear-gradient(
+      0deg, transparent, transparent 3px,
+      rgba(0,201,167,.012) 3px, rgba(0,201,167,.012) 4px
+    );
+  }
+
+  /* ---- Hero inner layout ---- */
+  .hero-inner {
+    position: relative; z-index: 4;
+    padding: 120px 0 100px;
+    display: grid;
+    grid-template-columns: 1fr 440px;
+    gap: 56px; align-items: center;
+  }
+
+  /* ---- Left content ---- */
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11.5px; font-weight: 700; letter-spacing: 1.4px;
+    text-transform: uppercase; color: var(--teal);
+    background: rgba(0,201,167,.10);
+    border: 1px solid rgba(0,201,167,.25);
+    padding: 7px 16px; border-radius: 30px;
+    margin-bottom: 28px;
+  }
+  .hero-eyebrow .dot-live {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--teal);
+    animation: live-pulse 2.2s ease-in-out infinite;
+    flex-shrink: 0;
+  }
+  @keyframes live-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.5)} }
+
+  .hero-title {
+    font-family: var(--font-head);
+    font-size: clamp(34px, 4.2vw, 62px);
+    font-weight: 800; line-height: 1.08;
+    color: #fff; margin-bottom: 24px;
+    letter-spacing: -1.5px;
+    text-shadow: 0 2px 24px rgba(0,0,0,.5);
+  }
+  .hero-title .word-dim    { color: rgba(255,255,255,.55); font-weight: 400; }
+  .hero-title .word-teal   { color: var(--teal); }
+  .hero-title .word-accent {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255,255,255,.7);
+  }
+
+  .hero-sub {
+    font-size: 16.5px; color: rgba(255,255,255,.72);
+    line-height: 1.8; max-width: 460px; margin-bottom: 38px;
+  }
+
+  .hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
+
+  /* CTA utama — lebih impactful */
+  .btn-hero-primary {
+    background: linear-gradient(135deg, var(--blue) 0%, #1557a8 100%);
+    color: #fff; padding: 14px 28px;
+    border-radius: var(--r-md); font-size: 14.5px; font-weight: 700;
+    display: inline-flex; align-items: center; gap: 9px;
+    box-shadow: 0 4px 20px rgba(26,111,196,.45), 0 1px 4px rgba(0,0,0,.3);
+    transition: all var(--t);
+  }
+  .btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 28px rgba(26,111,196,.55); }
+  .btn-hero-secondary {
+    background: rgba(255,255,255,.09);
+    color: rgba(255,255,255,.85); padding: 14px 28px;
+    border-radius: var(--r-md); font-size: 14.5px; font-weight: 600;
+    display: inline-flex; align-items: center; gap: 9px;
+    border: 1.5px solid rgba(255,255,255,.18);
+    backdrop-filter: blur(8px);
+    transition: all var(--t);
+  }
+  .btn-hero-secondary:hover { background: rgba(255,255,255,.15); border-color: rgba(255,255,255,.3); color: #fff; }
+
+  /* Tool badges bawah CTA */
+  .hero-tools {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  }
+  .hero-tools-label {
+    font-size: 11px; font-weight: 600; letter-spacing: .8px;
+    text-transform: uppercase; color: rgba(255,255,255,.3);
+  }
+  .hero-tool-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11.5px; font-weight: 500; color: rgba(255,255,255,.5);
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    padding: 4px 10px; border-radius: 20px;
+    transition: color var(--t), border-color var(--t);
+  }
+  .hero-tool-badge:hover { color: rgba(255,255,255,.85); border-color: rgba(255,255,255,.25); }
+  .hero-tool-badge i { font-size: 10px; color: var(--teal); }
+
+  /* ---- Right — info cards panel ---- */
+  .hero-cards {
+    display: flex; flex-direction: column; gap: 12px;
+  }
+
+  /* Card panel header */
+  .hero-panel-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 16px;
+    background: rgba(0,201,167,.08);
+    border: 1px solid rgba(0,201,167,.2);
+    border-radius: var(--r-md);
+    margin-bottom: 4px;
+  }
+  .hero-panel-title {
+    font-size: 11px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--teal);
+    display: flex; align-items: center; gap: 7px;
+  }
+  .hero-panel-title .dot-live {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--teal);
+    animation: live-pulse 2.2s ease-in-out infinite;
+  }
+  .hero-panel-ts {
+    font-size: 10.5px; color: rgba(255,255,255,.28);
+    font-family: monospace;
+  }
+
+  /* Info card individual */
+  .hero-info-card {
+    background: rgba(8,16,32,.6);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: var(--r-lg);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    padding: 16px 18px;
+    transition: background var(--t), border-color var(--t), transform var(--t);
+    cursor: default;
+  }
+  .hero-info-card:hover {
+    background: rgba(8,16,32,.75);
+    border-color: rgba(0,201,167,.35);
+    transform: translateX(3px);
+  }
+  .hero-info-card-head {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 7px;
+  }
+  .hero-info-icon {
+    width: 34px; height: 34px; border-radius: 9px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; flex-shrink: 0;
+  }
+  .hero-info-icon.blue  { background: rgba(26,111,196,.22); color: #7bc7ff; }
+  .hero-info-icon.teal  { background: rgba(0,201,167,.18);  color: var(--teal); }
+  .hero-info-icon.green { background: rgba(76,175,80,.18);   color: var(--green-light); }
+  .hero-info-icon.gold  { background: rgba(245,197,24,.15);  color: var(--gold); }
+  .hero-info-card-label {
+    font-size: 10px; font-weight: 700; letter-spacing: .7px;
+    text-transform: uppercase; color: rgba(255,255,255,.38);
+    margin-bottom: 1px;
+  }
+  .hero-info-card-val {
+    font-family: var(--font-head); font-size: 15px; font-weight: 700; color: #fff; line-height: 1.2;
+  }
+  .hero-info-card-desc {
+    font-size: 12px; color: rgba(255,255,255,.42); line-height: 1.5;
+  }
+
+  /* Badge bawah cards */
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(245,197,24,.10);
+    border: 1px solid rgba(245,197,24,.22);
+    color: var(--gold); font-size: 11.5px; font-weight: 600;
+    padding: 7px 14px; border-radius: 20px;
+    margin-top: 4px; align-self: flex-start;
+  }
+  .hero-badge i { animation: spin-slow 8s linear infinite; }
+  @keyframes spin-slow { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+
+  /* Hero logo watermark */
+  .hero-logo-mark {
+    position: absolute; bottom: 40px; right: 0; z-index: 4;
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.08);
+    backdrop-filter: blur(10px);
+    border-radius: var(--r-lg); padding: 10px 16px;
+  }
+  .hero-logo-mark img { width: 30px; height: 30px; object-fit: contain; border-radius: 6px; }
+  .hero-logo-mark span { font-family: var(--font-head); font-size: 14px; font-weight: 700; }
+  .hero-logo-mark .gis  { color: #2E9CFF; }
+  .hero-logo-mark .dot  { color: var(--gold); }
+  .hero-logo-mark .ight { color: var(--green-light); }
+
+  /* Scroll arrow */
+  .hero-scroll-arrow {
+    position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%);
+    z-index: 4; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  }
+  .hero-scroll-arrow span {
+    font-size: 9.5px; color: rgba(255,255,255,.28); letter-spacing: 1.5px; text-transform: uppercase;
+  }
+  .arrow-bounce {
+    color: rgba(255,255,255,.3); font-size: 16px;
+    animation: bounceDown 1.8s ease-in-out infinite;
+  }
+  @keyframes bounceDown { 0%,100%{transform:translateY(0)} 50%{transform:translateY(7px)} }
+
+  /* ============================================================
+     STATS BAR — redesign lebih informatif
+  ============================================================ */
+  #stats-bar {
+    background: linear-gradient(90deg, var(--navy) 0%, #0c1d38 50%, var(--navy) 100%);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    position: relative; overflow: hidden;
+  }
+  #stats-bar::before {
+    content: ''; position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 30% 100% at 0% 50%, rgba(0,201,167,.05) 0%, transparent 70%),
+      radial-gradient(ellipse 30% 100% at 100% 50%, rgba(26,111,196,.05) 0%, transparent 70%);
+  }
+  .stats-bar-inner {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    position: relative; z-index: 1;
+  }
+  .stat-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 28px 24px;
+    border-right: 1px solid rgba(255,255,255,.05);
+    transition: background var(--t);
+    position: relative;
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-item:hover { background: rgba(255,255,255,.025); }
+  /* Accent top line on hover */
+  .stat-item::after {
+    content: ''; position: absolute; top: 0; left: 24px; right: 24px; height: 2px;
+    border-radius: 0 0 2px 2px;
+    transform: scaleX(0); transform-origin: center;
+    transition: transform .3s ease;
+  }
+  .stat-item.blue-a::after  { background: #7bc7ff; }
+  .stat-item.teal-a::after  { background: var(--teal); }
+  .stat-item.green-a::after { background: var(--green-light); }
+  .stat-item.gold-a::after  { background: var(--gold); }
+  .stat-item:hover::after { transform: scaleX(1); }
+
+  .stat-icon {
+    width: 44px; height: 44px; border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; flex-shrink: 0;
+  }
+  .stat-icon.blue   { background: rgba(26,111,196,.18);  color: #7bc7ff; }
+  .stat-icon.teal   { background: rgba(0,201,167,.15);   color: var(--teal); }
+  .stat-icon.green  { background: rgba(76,175,80,.15);   color: var(--green-light); }
+  .stat-icon.gold   { background: rgba(245,197,24,.13);  color: var(--gold); }
+  .stat-num {
+    font-family: var(--font-head); font-size: 30px; font-weight: 800; color: #fff;
+    line-height: 1; letter-spacing: -1px;
+  }
+  .stat-num .stat-unit {
+    font-size: 16px; font-weight: 600; letter-spacing: 0; color: rgba(255,255,255,.6);
+    margin-left: 1px;
+  }
+  .stat-label { font-size: 13px; font-weight: 500; color: rgba(255,255,255,.6); margin-top: 3px; }
+  .stat-sub   { font-size: 10.5px; color: rgba(255,255,255,.22); margin-top: 2px; letter-spacing: .2px; }
+
+  /* ============================================================
+     ABOUT SECTION
+  ============================================================ */
+  #about { background: var(--gray-50); }
+  .about-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 72px; align-items: center;
+  }
+
+  /* Visual kiri — logo showcase */
+  .about-visual {
+    position: relative;
+    display: flex; align-items: center; justify-content: center;
+    padding: 40px 20px 56px;
+  }
+
+  /* Card utama pembungkus logo */
+  .about-logo-card {
+    position: relative;
+    width: 100%; max-width: 380px;
+    background: linear-gradient(145deg, var(--navy) 0%, #0c2248 55%, #071c38 100%);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 28px;
+    padding: 52px 40px 44px;
+    display: flex; flex-direction: column; align-items: center;
+    box-shadow:
+      0 24px 64px rgba(0,0,0,.28),
+      0 0 0 1px rgba(255,255,255,.04) inset;
+    overflow: hidden;
+  }
+
+  /* Grid dot pattern background kartu */
+  .about-logo-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(circle, rgba(255,255,255,.07) 1px, transparent 1px);
+    background-size: 28px 28px;
+    border-radius: 28px;
+  }
+
+  /* Glow radial di tengah */
+  .about-logo-card::after {
+    content: '';
+    position: absolute;
+    top: 30%; left: 50%; transform: translate(-50%, -50%);
+    width: 260px; height: 260px;
+    background: radial-gradient(circle,
+      rgba(0,201,167,.13) 0%,
+      rgba(26,111,196,.08) 40%,
+      transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* SVG logo besar di tengah kartu */
+  .about-logo-svg {
+    position: relative; z-index: 1;
+    width: 160px; height: 160px;
+    margin-bottom: 28px;
+    filter: drop-shadow(0 8px 32px rgba(0,201,167,.22))
+            drop-shadow(0 0 64px rgba(26,111,196,.15));
+    animation: about-logo-float 5s ease-in-out infinite;
+  }
+  @keyframes about-logo-float {
+    0%,100% { transform: translateY(0); }
+    50%      { transform: translateY(-8px); }
+  }
+
+  /* Nama brand di bawah logo */
+  .about-logo-brand {
+    position: relative; z-index: 1;
+    font-family: var(--font-head); font-size: 32px; font-weight: 800;
+    letter-spacing: -1px; line-height: 1; margin-bottom: 8px;
+  }
+  .about-logo-brand .gis  { color: #2E9CFF; }
+  .about-logo-brand .dot  { color: var(--gold); }
+  .about-logo-brand .ight { color: var(--green-light); }
+
+  /* Tagline di bawah nama */
+  .about-logo-tagline {
+    position: relative; z-index: 1;
+    font-size: 12px; font-weight: 500; letter-spacing: 1.2px;
+    text-transform: uppercase; color: rgba(255,255,255,.38);
+    margin-bottom: 32px;
+  }
+
+  /* Tiga chip info di bawah */
+  .about-logo-chips {
+    position: relative; z-index: 1;
+    display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+  }
+  .about-logo-chip {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 11px; font-weight: 600;
+    padding: 5px 11px; border-radius: 20px;
+    border: 1px solid;
+  }
+  .about-logo-chip.teal  { color: var(--teal);        background: rgba(0,201,167,.1);  border-color: rgba(0,201,167,.25); }
+  .about-logo-chip.blue  { color: #7bc7ff;             background: rgba(26,111,196,.1); border-color: rgba(26,111,196,.25); }
+  .about-logo-chip.green { color: var(--green-light);  background: rgba(76,175,80,.1);  border-color: rgba(76,175,80,.25); }
+
+  /* Dekorasi orbit ring di belakang kartu */
+  .about-orbit-deco {
+    position: absolute;
+    width: 320px; height: 320px;
+    border: 1px dashed rgba(0,201,167,.15);
+    border-radius: 50%;
+    top: 50%; left: 50%; transform: translate(-50%, -50%);
+    animation: orbit-spin 18s linear infinite;
+  }
+  .about-orbit-deco-2 {
+    position: absolute;
+    width: 420px; height: 260px;
+    border: 1px dashed rgba(26,111,196,.1);
+    border-radius: 50%;
+    top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(30deg);
+    animation: orbit-spin 28s linear infinite reverse;
+  }
+  @keyframes orbit-spin { 0%{transform:translate(-50%,-50%) rotate(0deg)} 100%{transform:translate(-50%,-50%) rotate(360deg)} }
+
+  /* Dot bergerak di orbit */
+  .about-orbit-dot {
+    position: absolute; width: 8px; height: 8px; border-radius: 50%;
+    top: calc(50% - 160px); left: 50%; margin-left: -4px;
+    background: var(--teal);
+    box-shadow: 0 0 8px var(--teal);
+    animation: orbit-spin 18s linear infinite;
+    transform-origin: 4px 160px;
+  }
+  .about-orbit-dot-2 {
+    position: absolute; width: 6px; height: 6px; border-radius: 50%;
+    top: calc(50% - 130px); left: 50%; margin-left: -3px;
+    background: var(--gold);
+    box-shadow: 0 0 6px var(--gold);
+    animation: orbit-spin 28s linear infinite reverse;
+    transform-origin: 3px 130px;
+  }
+
+  /* Badge float kiri bawah */
+  .about-badge-float {
+    position: absolute; bottom: 24px; left: 0;
+    background: var(--white); border: 1px solid var(--gray-200);
+    border-radius: var(--r-lg); padding: 12px 18px;
+    display: flex; align-items: center; gap: 12px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.10);
+  }
+  .about-badge-float .num {
+    font-family: var(--font-head); font-size: 22px; font-weight: 700;
+    color: var(--teal); line-height: 1;
+  }
+  .about-badge-float .lbl { font-size: 11.5px; color: var(--gray-600); margin-top: 2px; }
+
+  /* Badge float kanan bawah */
+  .about-badge-float-2 {
+    position: absolute; bottom: 24px; right: 0;
+    background: var(--white); border: 1px solid var(--gray-200);
+    border-radius: var(--r-lg); padding: 12px 18px;
+    display: flex; align-items: center; gap: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,.10);
+  }
+  .about-badge-float-2 .num {
+    font-family: var(--font-head); font-size: 22px; font-weight: 700;
+    color: var(--blue); line-height: 1;
+  }
+  .about-badge-float-2 .lbl { font-size: 11.5px; color: var(--gray-600); margin-top: 2px; }
+
+  .about-content { padding-top: 16px; }
+  .about-content h2 {
+    font-family: var(--font-head); font-size: 32px; font-weight: 700;
+    color: var(--gray-800); line-height: 1.2; margin-bottom: 16px;
+  }
+  .about-content h2 span { color: var(--blue); }
+  .about-content p {
+    font-size: 15.5px; color: var(--gray-600); line-height: 1.8; margin-bottom: 14px;
+  }
+  .about-tagline {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 14px; font-weight: 600; color: var(--teal);
+    font-style: italic; margin-bottom: 28px;
+  }
+  .about-tagline i { font-size: 12px; }
+  .about-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+  .about-list-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 14px; color: var(--gray-600); line-height: 1.55;
+  }
+  .about-list-icon {
+    width: 28px; height: 28px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--blue), var(--teal));
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 12px; flex-shrink: 0; margin-top: 1px;
+  }
+
+  /* ============================================================
+     FOCUS / PILAR
+  ============================================================ */
+  #focus { background: var(--white); }
+  .focus-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+  .focus-card {
+    border: 1.5px solid var(--gray-200); border-radius: var(--r-xl);
+    padding: 28px 22px; background: #fff;
+    transition: all var(--t); position: relative; overflow: hidden;
+  }
+  .focus-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--blue), var(--teal));
+    transform: scaleX(0); transform-origin: left;
+    transition: transform .3s ease;
+  }
+  .focus-card:hover::before { transform: scaleX(1); }
+  .focus-card:hover {
+    border-color: transparent;
+    box-shadow: var(--sh-md);
+    transform: translateY(-4px);
+  }
+  .focus-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; margin-bottom: 18px;
+  }
+  .focus-icon.blue   { background: #dbeafe; color: #1d4ed8; }
+  .focus-icon.teal   { background: #ccfbf1; color: #0f766e; }
+  .focus-icon.purple { background: #ede9fe; color: #6d28d9; }
+  .focus-icon.green  { background: #dcfce7; color: #15803d; }
+  .focus-card h3 { font-size: 16px; font-weight: 700; color: var(--gray-800); margin-bottom: 10px; }
+  .focus-card p  { font-size: 13.5px; color: var(--gray-600); line-height: 1.65; margin-bottom: 18px; }
+
+  /* ============================================================
+     KONTEN TERBARU (bukan WebGIS langsung)
+  ============================================================ */
+  #konten { background: var(--gray-50); }
+  .konten-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+  .konten-card {
+    background: #fff; border: 1px solid var(--gray-200);
+    border-radius: var(--r-xl); overflow: hidden;
+    transition: all var(--t);
+  }
+  .konten-card:hover { box-shadow: var(--sh-md); transform: translateY(-3px); border-color: transparent; }
+  .konten-img {
+    aspect-ratio: 4/3; overflow: hidden;
+    background: var(--navy); position: relative;
+    display: flex; align-items: flex-end;
+  }
+  .konten-img svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .konten-img-label {
+    position: relative; z-index: 1; margin: 0 14px 14px;
+    background: rgba(0,0,0,.5); backdrop-filter: blur(6px);
+    border-radius: var(--r-md); padding: 6px 12px;
+    font-size: 11.5px; color: rgba(255,255,255,.75);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .konten-card-body { padding: 18px 18px 20px; }
+  .konten-meta { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+  .konten-date { font-size: 11.5px; color: var(--gray-400); }
+  .konten-card h3 { font-size: 15px; font-weight: 600; color: var(--gray-800); line-height: 1.4; margin-bottom: 8px; }
+  .konten-card p  { font-size: 13px; color: var(--gray-600); line-height: 1.6; margin-bottom: 14px;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .konten-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .konten-tag {
+    font-size: 11px; padding: 2px 8px; border-radius: 20px;
+    background: var(--gray-100); color: var(--gray-600);
+  }
+  .konten-cta { text-align: center; margin-top: 40px; }
+
+  /* ============================================================
+     WEBGIS TEASER (bukan langsung tampil peta)
+  ============================================================ */
+  #webgis-teaser {
+    background: var(--navy);
+    position: relative; overflow: hidden;
+  }
+  #webgis-teaser::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 50%, rgba(26,111,196,.15) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 10% 30%, rgba(0,201,167,.08) 0%, transparent 60%);
+  }
+  .webgis-inner {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 64px; align-items: center;
+    position: relative; z-index: 1;
+  }
+  .webgis-text h2 {
+    font-family: var(--font-head); font-size: 34px; font-weight: 700;
+    color: #fff; line-height: 1.2; margin-bottom: 16px;
+  }
+  .webgis-text h2 span { color: var(--teal); }
+  .webgis-text p { font-size: 15.5px; color: rgba(255,255,255,.6); line-height: 1.8; margin-bottom: 28px; }
+  .webgis-features { display: flex; flex-direction: column; gap: 14px; margin-bottom: 32px; }
+  .webgis-feat {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 14px; color: rgba(255,255,255,.7); line-height: 1.5;
+  }
+  .webgis-feat i { color: var(--teal); font-size: 16px; margin-top: 1px; flex-shrink: 0; }
+  .webgis-feat strong { color: rgba(255,255,255,.9); }
+
+  /* Preview window */
+  .webgis-preview-box {
+    border-radius: var(--r-xl); overflow: hidden;
+    border: 1px solid rgba(255,255,255,.1);
+    box-shadow: var(--sh-lg);
+  }
+  .webgis-browser-bar {
+    background: rgba(255,255,255,.05);
+    border-bottom: 1px solid rgba(255,255,255,.07);
+    padding: 10px 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .browser-dots { display: flex; gap: 5px; }
+  .browser-dots span {
+    width: 10px; height: 10px; border-radius: 50%;
+  }
+  .browser-dots .r { background: #ff5f57; }
+  .browser-dots .y { background: #febc2e; }
+  .browser-dots .g { background: #28c840; }
+  .browser-url {
+    flex: 1; background: rgba(255,255,255,.07);
+    border-radius: 5px; padding: 4px 10px;
+    font-size: 11.5px; color: rgba(255,255,255,.4);
+    font-family: monospace;
+  }
+  .webgis-screen {
+    aspect-ratio: 4/3;
+    background: linear-gradient(160deg, #071830 0%, #0a2a18 55%, #071830 100%);
+    position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .webgis-screen svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .webgis-screen-label {
+    position: relative; z-index: 1;
+    background: rgba(0,0,0,.5); backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: var(--r-md); padding: 8px 16px;
+    font-size: 12.5px; color: rgba(255,255,255,.75); font-weight: 500;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .screen-ping {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--teal); animation: live-pulse 2s ease-in-out infinite;
+  }
+  .webgis-toolbar {
+    background: rgba(255,255,255,.04);
+    border-top: 1px solid rgba(255,255,255,.06);
+    padding: 10px 16px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .layer-chip {
+    font-size: 11px; font-weight: 600;
+    padding: 3px 9px; border-radius: 20px;
+    background: rgba(0,201,167,.15); color: var(--teal);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .layer-chip i { font-size: 9px; }
+
+  /* ============================================================
+     PARTNERS
+  ============================================================ */
+  #partners {
+    background: var(--white);
+    border-top: 1px solid var(--gray-100);
+    border-bottom: 1px solid var(--gray-100);
+  }
+  .partners-label {
+    text-align: center; font-size: 12px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase;
+    color: var(--gray-400); margin-bottom: 32px;
+  }
+  .partners-row {
+    overflow: hidden; position: relative;
+  }
+  .partners-track {
+    display: flex; gap: 0; align-items: center;
+    animation: marquee 24s linear infinite;
+    width: max-content;
+  }
+  .partners-track:hover { animation-play-state: paused; }
+  @keyframes marquee { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+  .partner-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 0 36px; white-space: nowrap;
+    font-size: 14px; font-weight: 600; color: var(--gray-400);
+    transition: color var(--t); flex-shrink: 0;
+  }
+  .partner-item:hover { color: var(--gray-800); }
+  .partner-item i { font-size: 20px; }
+  .partner-divider {
+    width: 1px; height: 28px;
+    background: var(--gray-200); flex-shrink: 0;
+  }
+
+  /* ============================================================
+     NEWSLETTER
+  ============================================================ */
+  #newsletter {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    position: relative; overflow: hidden;
+  }
+  #newsletter::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .newsletter-inner {
+    display: grid; grid-template-columns: 1fr 1fr;
+    align-items: center; gap: 64px;
+    position: relative; z-index: 1;
+  }
+  .newsletter-text .eyebrow {
+    font-size: 12px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 10px;
+  }
+  .newsletter-text h2 {
+    font-family: var(--font-head); font-size: 30px; font-weight: 700;
+    color: #fff; margin-bottom: 12px; line-height: 1.2;
+  }
+  .newsletter-text p { font-size: 15px; color: rgba(255,255,255,.55); line-height: 1.75; }
+  .newsletter-form {
+    display: flex; gap: 10px; margin-bottom: 16px;
+  }
+  .newsletter-form input {
+    flex: 1; background: rgba(255,255,255,.08);
+    border: 1.5px solid rgba(255,255,255,.14);
+    border-radius: var(--r-md); padding: 12px 16px;
+    font-size: 14px; color: #fff; font-family: var(--font-body);
+    outline: none; transition: border-color var(--t);
+  }
+  .newsletter-form input::placeholder { color: rgba(255,255,255,.38); }
+  .newsletter-form input:focus { border-color: var(--teal); }
+  .nl-note { font-size: 12px; color: rgba(255,255,255,.3); display: flex; align-items: center; gap: 5px; }
+  .nl-note i { color: var(--teal); }
+  .nl-perks { display: flex; flex-direction: column; gap: 10px; margin-top: 24px; }
+  .nl-perk { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: rgba(255,255,255,.6); }
+  .nl-perk i { color: var(--teal); font-size: 14px; }
+
+  /* ============================================================
+     FOOTER
+  ============================================================ */
+  #footer { background: var(--navy); border-top: 1px solid rgba(255,255,255,.06); }
+  .footer-inner {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 48px; padding: 64px 0 44px;
+  }
+  .footer-brand-logo {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+  }
+  .footer-brand-logo img {
+    width: 42px; height: 42px; border-radius: 10px;
+    object-fit: contain; background: rgba(255,255,255,.06); padding: 3px;
+  }
+  .footer-brand-logo-text { font-family: var(--font-head); font-size: 20px; font-weight: 700; }
+  .footer-brand-logo-text .gis  { color: #2E9CFF; }
+  .footer-brand-logo-text .dot  { color: var(--gold); }
+  .footer-brand-logo-text .ight { color: var(--green-light); }
+  .footer-tagline { font-size: 12px; color: rgba(255,255,255,.4); font-style: italic; margin-bottom: 14px; }
+  .footer-brand p {
+    font-size: 13.5px; color: rgba(255,255,255,.42); line-height: 1.75; margin-bottom: 20px;
+  }
+  .footer-socials { display: flex; gap: 8px; }
+  .social-btn {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,.48); font-size: 14px;
+    transition: all var(--t);
+  }
+  .social-btn:hover { background: rgba(255,255,255,.12); color: #fff; }
+  .footer-col h5 {
+    font-size: 13px; font-weight: 600; color: #fff;
+    margin-bottom: 18px; letter-spacing: .3px;
+  }
+  .footer-col ul li { margin-bottom: 9px; }
+  .footer-col ul li a {
+    font-size: 13.5px; color: rgba(255,255,255,.42); transition: color var(--t);
+  }
+  .footer-col ul li a:hover { color: rgba(255,255,255,.85); }
+  .footer-contact { display: flex; flex-direction: column; gap: 12px; }
+  .fc-row {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 13px; color: rgba(255,255,255,.42); line-height: 1.5;
+  }
+  .fc-row i { color: var(--teal); font-size: 14px; margin-top: 2px; flex-shrink: 0; }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,.06);
+    padding: 18px 0;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-bottom p { font-size: 12px; color: rgba(255,255,255,.28); }
+  .footer-bottom-links { display: flex; gap: 20px; }
+  .footer-bottom-links a { font-size: 12px; color: rgba(255,255,255,.28); transition: color var(--t); }
+  .footer-bottom-links a:hover { color: rgba(255,255,255,.6); }
+
+  /* Back to top */
+  #btt {
+    position: fixed; bottom: 24px; right: 24px;
+    width: 42px; height: 42px; border-radius: 50%;
+    background: var(--blue); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; box-shadow: var(--sh-md);
+    opacity: 0; pointer-events: none; transition: all var(--t); z-index: 99;
+  }
+  #btt.show { opacity: 1; pointer-events: auto; }
+  #btt:hover { background: #155fa0; transform: translateY(-2px); }
+
+  /* Fade-in animation */
+  .reveal {
+    opacity: 0; transform: translateY(24px);
+    transition: opacity .6s ease, transform .6s ease;
+  }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ============================================================
+     RESPONSIVE
+  ============================================================ */
+  @media (max-width: 1024px) {
+    .hero-inner       { grid-template-columns: 1fr; }
+    .hero-cards       { display: none; }
+    .hero-logo-mark   { display: none; }
+    .about-inner      { grid-template-columns: 1fr; }
+    .about-visual     { display: none; }
+    .focus-grid       { grid-template-columns: repeat(2, 1fr); }
+    .konten-grid      { grid-template-columns: repeat(2, 1fr); }
+    .webgis-inner     { grid-template-columns: 1fr; }
+    .footer-inner     { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .newsletter-inner { grid-template-columns: 1fr; gap: 32px; }
+  }
+  @media (max-width: 768px) {
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    .stats-bar-inner { grid-template-columns: repeat(2, 1fr); }
+    .stat-item { border-bottom: 1px solid rgba(255,255,255,.05); }
+    .stat-item:nth-child(odd) { border-right: 1px solid rgba(255,255,255,.05); }
+    .stat-item:last-child, .stat-item:nth-last-child(2) { border-bottom: none; }
+    .focus-grid  { grid-template-columns: 1fr; }
+    .konten-grid { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr; gap: 24px; }
+    .footer-bottom { flex-direction: column; gap: 10px; }
+    .newsletter-form { flex-direction: column; }
+    .section-pad { padding: 60px 0; }
+    .hero-title { font-size: 30px; letter-spacing: -.5px; }
+    .hero-tools { gap: 7px; }
+    .hero-inner { padding: 100px 0 70px; }
+  }
+  @media (max-width: 480px) {
+    .stats-bar-inner { grid-template-columns: 1fr; }
+    .stat-item { border-right: none !important; }
+    .hero-title { font-size: 26px; }
+    .hero-tool-badge { font-size: 10.5px; }
+  }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVBAR
+============================================================ -->
+<nav id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">
+        <!-- Logo SVG inline -->
+        <svg class="nav-logo-img" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-label="GIS.ight Logo">
+          <defs>
+            <radialGradient id="globeGrad" cx="38%" cy="35%" r="65%">
+              <stop offset="0%"   stop-color="#3bcfff"/>
+              <stop offset="45%"  stop-color="#1a7ad4"/>
+              <stop offset="100%" stop-color="#0d3a8a"/>
+            </radialGradient>
+            <radialGradient id="landGrad" cx="40%" cy="30%" r="70%">
+              <stop offset="0%"   stop-color="#52d68a"/>
+              <stop offset="100%" stop-color="#1a7a3c"/>
+            </radialGradient>
+            <clipPath id="globeClip">
+              <circle cx="20" cy="20" r="14.5"/>
+            </clipPath>
+          </defs>
+          <!-- Globe base -->
+          <circle cx="20" cy="20" r="14.5" fill="url(#globeGrad)"/>
+          <!-- Land masses -->
+          <g clip-path="url(#globeClip)">
+            <!-- Eurasia + Africa blob -->
+            <path d="M18 7 Q24 6 28 10 Q31 13 30 17 Q29 20 26 21 Q23 23 22 26 Q21 28 20 30 Q18 28 17 24 Q16 20 14 18 Q12 15 13 11 Z" fill="url(#landGrad)" opacity=".9"/>
+            <!-- Americas -->
+            <path d="M8 11 Q11 9 13 12 Q14 15 12 19 Q10 22 9 25 Q8 22 7 18 Q6 14 8 11Z" fill="url(#landGrad)" opacity=".85"/>
+            <!-- Australia -->
+            <path d="M27 24 Q30 23 31 26 Q31 28 29 29 Q27 29 26 27 Z" fill="url(#landGrad)" opacity=".8"/>
+          </g>
+          <!-- Grid lines (lat/lon) -->
+          <g clip-path="url(#globeClip)" stroke="rgba(255,255,255,0.35)" stroke-width="0.6" fill="none">
+            <!-- Latitude lines -->
+            <ellipse cx="20" cy="20" rx="14.5" ry="5.5"/>
+            <ellipse cx="20" cy="20" rx="14.5" ry="10"/>
+            <!-- Longitude lines -->
+            <ellipse cx="20" cy="20" rx="5.5"  ry="14.5"/>
+            <ellipse cx="20" cy="20" rx="10"   ry="14.5"/>
+          </g>
+          <!-- Globe rim -->
+          <circle cx="20" cy="20" r="14.5" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="0.7"/>
+          <!-- Orbit ring (tilted ellipse) -->
+          <ellipse cx="20" cy="20" rx="19" ry="7" fill="none"
+            stroke="#3cd89a" stroke-width="1.2" stroke-dasharray="3.5 2.5" opacity=".85"
+            transform="rotate(-30,20,20)"/>
+          <!-- Leaf node on orbit -->
+          <circle cx="9.5" cy="16.5" r="2" fill="#3cd89a" opacity=".9"/>
+          <path d="M9.5 16.5 Q10.5 14.5 11.5 15.5 Q10.5 17.5 9.5 16.5Z" fill="#fff" opacity=".7"/>
+          <!-- Satellite dot on orbit -->
+          <circle cx="32" cy="22.5" r="1.6" fill="#f5c518" opacity=".95"/>
+          <circle cx="32" cy="22.5" r="2.8" fill="none" stroke="#f5c518" stroke-width="0.5" opacity=".4"/>
+          <!-- Specular highlight -->
+          <ellipse cx="15" cy="14" rx="4" ry="2.5" fill="rgba(255,255,255,0.18)" transform="rotate(-20,15,14)"/>
+        </svg>
+        <div>
+          <div class="nav-logo-text">
+            <span class="gis">GIS</span><span class="dot">.</span><span class="ight">ight</span>
+          </div>
+          <div class="nav-tagline">Where Data Meets The Earth</div>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#hero" class="active">Home</a></li>
+        <li><a href="#about">Tentang</a></li>
+        <li><a href="informasi.html">Informasi</a></li>
+        <li><a href="webgis.html">WebGIS</a></li>
+        <li><a href="publikasi.html">Publikasi</a></li>
+        <li><a href="#kontak">Kontak</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a href="informasi.html" class="btn btn-primary btn-sm">
+          <i class="fa-solid fa-satellite-dish"></i> Mulai Eksplorasi
+        </a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#hero">Home</a>
+  <a href="#about">Tentang Kami</a>
+  <a href="informasi.html">Informasi</a>
+  <a href="webgis.html">WebGIS</a>
+  <a href="publikasi.html">Publikasi</a>
+  <a href="#kontak">Kontak</a>
+  <a href="informasi.html" class="btn btn-primary">Mulai Eksplorasi</a>
+</div>
+
+<!-- ============================================================
+     HERO
+============================================================ -->
+<section id="hero">
+  <!-- Canvas animasi bumi interaktif -->
+  <canvas id="heroCanvas" aria-hidden="true"></canvas>
+  <div class="hero-bg-img" aria-hidden="true"></div>
+  <div class="hero-overlay"  aria-hidden="true"></div>
+  <div class="hero-vignette" aria-hidden="true"></div>
+  <div class="hero-grid"     aria-hidden="true"></div>
+  <div class="hero-scanline" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="hero-inner">
+
+      <!-- Left — konten utama -->
+      <div>
+        <div class="hero-eyebrow">
+          <div class="dot-live"></div>
+          Platform Pembelajaran Penginderaan Jauh & GIS
+        </div>
+
+        <h1 class="hero-title">
+          <span class="word-dim">Data Spasial</span><br>
+          untuk <span class="word-teal">Memahami</span><br>
+          <span class="word-accent">Bumi Kita</span>
+        </h1>
+
+        <p class="hero-sub">
+          GIS.ight adalah ruang belajar, eksplorasi, dan kolaborasi geospasial — mulai dari dasar penginderaan jauh, analisis citra satelit, hingga WebGIS interaktif untuk akademisi dan profesional Indonesia.
+        </p>
+
+        <div class="hero-actions">
+          <a href="informasi.html" class="btn-hero-primary">
+            <i class="fa-solid fa-compass"></i>
+            Mulai Belajar
+          </a>
+          <a href="#about" class="btn-hero-secondary">
+            <i class="fa-solid fa-circle-play"></i>
+            Tentang Platform
+          </a>
+        </div>
+
+        <!-- Tool badges -->
+        <div class="hero-tools">
+          <span class="hero-tools-label">Berbasis</span>
+          <span class="hero-tool-badge"><i class="fa-solid fa-satellite"></i> Landsat & Sentinel</span>
+          <span class="hero-tool-badge"><i class="fa-brands fa-google"></i> Google Earth Engine</span>
+          <span class="hero-tool-badge"><i class="fa-solid fa-map"></i> QGIS</span>
+          <span class="hero-tool-badge"><i class="fa-solid fa-globe"></i> OpenStreetMap</span>
+        </div>
+      </div>
+
+      <!-- Right — info cards panel -->
+      <div class="hero-cards">
+        <!-- Panel header -->
+        <div class="hero-panel-header">
+          <div class="hero-panel-title">
+            <div class="dot-live"></div>
+            Status Platform
+          </div>
+          <div class="hero-panel-ts" id="heroTimestamp">Live</div>
+        </div>
+
+        <!-- Card 1: Remote Sensing -->
+        <div class="hero-info-card">
+          <div class="hero-info-card-head">
+            <div class="hero-info-icon blue"><i class="fa-solid fa-satellite"></i></div>
+            <div>
+              <div class="hero-info-card-label">Penginderaan Jauh</div>
+              <div class="hero-info-card-val">Citra Multispektral</div>
+            </div>
+          </div>
+          <div class="hero-info-card-desc">Landsat 8/9 · Sentinel-2 · MODIS — analisis perubahan tutupan lahan dan kondisi vegetasi secara temporal.</div>
+        </div>
+
+        <!-- Card 2: GIS & Spatial -->
+        <div class="hero-info-card">
+          <div class="hero-info-card-head">
+            <div class="hero-info-icon teal"><i class="fa-solid fa-map-location-dot"></i></div>
+            <div>
+              <div class="hero-info-card-label">Analisis Spasial</div>
+              <div class="hero-info-card-val">GIS & Pemetaan</div>
+            </div>
+          </div>
+          <div class="hero-info-card-desc">Visualisasi data spasial berbasis QGIS & Google Earth Engine untuk pengambilan keputusan berbasis lokasi.</div>
+        </div>
+
+        <!-- Card 3: Environment -->
+        <div class="hero-info-card">
+          <div class="hero-info-card-head">
+            <div class="hero-info-icon green"><i class="fa-solid fa-tree"></i></div>
+            <div>
+              <div class="hero-info-card-label">Fokus Kajian</div>
+              <div class="hero-info-card-val">Lingkungan & Lahan</div>
+            </div>
+          </div>
+          <div class="hero-info-card-desc">Monitoring deforestasi, Urban Heat Island, dan perubahan penggunaan lahan di Sumatera Selatan dan sekitarnya.</div>
+        </div>
+
+        <!-- Card 4: WebGIS -->
+        <div class="hero-info-card">
+          <div class="hero-info-card-head">
+            <div class="hero-info-icon gold"><i class="fa-solid fa-globe"></i></div>
+            <div>
+              <div class="hero-info-card-label">WebGIS Interaktif</div>
+              <div class="hero-info-card-val">Peta Online</div>
+            </div>
+          </div>
+          <div class="hero-info-card-desc">Akses peta tematik langsung dari browser — tanpa instalasi, tersedia untuk publik dan komunitas peneliti.</div>
+        </div>
+
+        <!-- Badge bawah -->
+        <div class="hero-badge">
+          <i class="fa-solid fa-earth-asia"></i>
+          Where Data Meets The Earth
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Logo watermark bottom right -->
+  <div class="hero-logo-mark">
+    <svg width="30" height="30" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="hGlobeG" cx="38%" cy="35%" r="65%">
+          <stop offset="0%"   stop-color="#3bcfff"/>
+          <stop offset="45%"  stop-color="#1a7ad4"/>
+          <stop offset="100%" stop-color="#0d3a8a"/>
+        </radialGradient>
+        <radialGradient id="hLandG" cx="40%" cy="30%" r="70%">
+          <stop offset="0%"   stop-color="#52d68a"/>
+          <stop offset="100%" stop-color="#1a7a3c"/>
+        </radialGradient>
+        <clipPath id="hClip"><circle cx="20" cy="20" r="14.5"/></clipPath>
+      </defs>
+      <circle cx="20" cy="20" r="14.5" fill="url(#hGlobeG)"/>
+      <g clip-path="url(#hClip)">
+        <path d="M18 7 Q24 6 28 10 Q31 13 30 17 Q29 20 26 21 Q23 23 22 26 Q21 28 20 30 Q18 28 17 24 Q16 20 14 18 Q12 15 13 11 Z" fill="url(#hLandG)" opacity=".9"/>
+        <path d="M8 11 Q11 9 13 12 Q14 15 12 19 Q10 22 9 25 Q8 22 7 18 Q6 14 8 11Z" fill="url(#hLandG)" opacity=".85"/>
+        <path d="M27 24 Q30 23 31 26 Q31 28 29 29 Q27 29 26 27 Z" fill="url(#hLandG)" opacity=".8"/>
+      </g>
+      <g clip-path="url(#hClip)" stroke="rgba(255,255,255,0.35)" stroke-width="0.6" fill="none">
+        <ellipse cx="20" cy="20" rx="14.5" ry="5.5"/>
+        <ellipse cx="20" cy="20" rx="14.5" ry="10"/>
+        <ellipse cx="20" cy="20" rx="5.5"  ry="14.5"/>
+        <ellipse cx="20" cy="20" rx="10"   ry="14.5"/>
+      </g>
+      <circle cx="20" cy="20" r="14.5" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="0.7"/>
+      <ellipse cx="20" cy="20" rx="19" ry="7" fill="none" stroke="#3cd89a" stroke-width="1.2" stroke-dasharray="3.5 2.5" opacity=".85" transform="rotate(-30,20,20)"/>
+      <circle cx="9.5" cy="16.5" r="2" fill="#3cd89a" opacity=".9"/>
+      <circle cx="32" cy="22.5" r="1.6" fill="#f5c518" opacity=".95"/>
+      <ellipse cx="15" cy="14" rx="4" ry="2.5" fill="rgba(255,255,255,0.18)" transform="rotate(-20,15,14)"/>
+    </svg>
+    <span>
+      <span class="gis">GIS</span><span class="dot">.</span><span class="ight">ight</span>
+    </span>
+  </div>
+
+  <!-- Scroll arrow -->
+  <div class="hero-scroll-arrow">
+    <span>Scroll</span>
+    <i class="fa-solid fa-chevron-down arrow-bounce"></i>
+  </div>
+</section>
+
+<!-- ============================================================
+     STATS BAR
+============================================================ -->
+<div id="stats-bar">
+  <div class="container">
+    <div class="stats-bar-inner">
+      <div class="stat-item blue-a reveal">
+        <div class="stat-icon blue"><i class="fa-solid fa-images"></i></div>
+        <div>
+          <div class="stat-num">50<span class="stat-unit">+</span></div>
+          <div class="stat-label">Konten Informatif</div>
+          <div class="stat-sub">Poster · infografis · tutorial GIS</div>
+        </div>
+      </div>
+      <div class="stat-item teal-a reveal">
+        <div class="stat-icon teal"><i class="fa-solid fa-layer-group"></i></div>
+        <div>
+          <div class="stat-num">10<span class="stat-unit">+</span></div>
+          <div class="stat-label">Proyek Spasial</div>
+          <div class="stat-sub">Analisis & pemetaan tematik</div>
+        </div>
+      </div>
+      <div class="stat-item green-a reveal">
+        <div class="stat-icon green"><i class="fa-solid fa-globe"></i></div>
+        <div>
+          <div class="stat-num">5<span class="stat-unit">+</span></div>
+          <div class="stat-label">WebGIS Interaktif</div>
+          <div class="stat-sub">Peta online tanpa instalasi</div>
+        </div>
+      </div>
+      <div class="stat-item gold-a reveal">
+        <div class="stat-icon gold"><i class="fa-solid fa-users"></i></div>
+        <div>
+          <div class="stat-num">1<span class="stat-unit">K+</span></div>
+          <div class="stat-label">Anggota Komunitas</div>
+          <div class="stat-sub">Pelajar · peneliti · profesional</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     ABOUT
+============================================================ -->
+<section id="about" class="section-pad">
+  <div class="container">
+    <div class="about-inner">
+      <!-- Visual kiri — Logo showcase -->
+      <div class="about-visual reveal">
+
+        <!-- Dekorasi orbit di luar kartu -->
+        <div class="about-orbit-deco"></div>
+        <div class="about-orbit-deco-2"></div>
+        <div class="about-orbit-dot"></div>
+        <div class="about-orbit-dot-2"></div>
+
+        <!-- Kartu utama logo -->
+        <div class="about-logo-card">
+          <!-- Logo SVG besar -->
+          <svg class="about-logo-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <radialGradient id="abGlobe" cx="38%" cy="32%" r="68%">
+                <stop offset="0%"   stop-color="#5de0ff"/>
+                <stop offset="35%"  stop-color="#2196f3"/>
+                <stop offset="75%"  stop-color="#0d47a1"/>
+                <stop offset="100%" stop-color="#061a3a"/>
+              </radialGradient>
+              <radialGradient id="abLand" cx="35%" cy="28%" r="72%">
+                <stop offset="0%"   stop-color="#69f0ae"/>
+                <stop offset="50%"  stop-color="#2e7d52"/>
+                <stop offset="100%" stop-color="#1b4a2e"/>
+              </radialGradient>
+              <radialGradient id="abGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%"   stop-color="rgba(0,201,167,0.22)"/>
+                <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+              </radialGradient>
+              <clipPath id="abClip"><circle cx="100" cy="100" r="74"/></clipPath>
+              <filter id="abBlur"><feGaussianBlur stdDeviation="3"/></filter>
+            </defs>
+
+            <!-- Outer glow ring -->
+            <circle cx="100" cy="100" r="90" fill="url(#abGlow)" filter="url(#abBlur)"/>
+
+            <!-- Atmosphere rim glow -->
+            <circle cx="100" cy="100" r="78" fill="none"
+              stroke="rgba(100,200,255,0.18)" stroke-width="8"/>
+
+            <!-- Globe body -->
+            <circle cx="100" cy="100" r="74" fill="url(#abGlobe)"/>
+
+            <!-- Continents -->
+            <g clip-path="url(#abClip)">
+              <!-- Eurasia + Africa -->
+              <path d="M95 34 Q118 30 135 46 Q150 58 148 75 Q145 88 135 94
+                       Q124 100 118 112 Q112 124 108 136
+                       Q100 128 96 112 Q90 96 80 86
+                       Q68 74 72 56 Z"
+                fill="url(#abLand)" opacity=".92"/>
+              <!-- Americas -->
+              <path d="M44 48 Q58 40 66 56 Q72 68 66 86
+                       Q58 100 52 116 Q46 106 42 88 Q36 68 44 48Z"
+                fill="url(#abLand)" opacity=".88"/>
+              <!-- Australia -->
+              <path d="M138 118 Q152 114 158 126 Q158 138 148 142
+                       Q138 144 132 134 Z"
+                fill="url(#abLand)" opacity=".82"/>
+              <!-- SE Asia hint -->
+              <path d="M140 78 Q148 74 152 82 Q150 88 144 88 Q138 86 140 78Z"
+                fill="url(#abLand)" opacity=".7"/>
+            </g>
+
+            <!-- Grid lines lat/lon -->
+            <g clip-path="url(#abClip)" stroke="rgba(255,255,255,0.28)" stroke-width="0.8" fill="none">
+              <!-- Latitudes -->
+              <ellipse cx="100" cy="100" rx="74" ry="24"/>
+              <ellipse cx="100" cy="100" rx="74" ry="46"/>
+              <!-- Longitudes -->
+              <ellipse cx="100" cy="100" rx="28" ry="74"/>
+              <ellipse cx="100" cy="100" rx="52" ry="74"/>
+            </g>
+
+            <!-- Globe outline -->
+            <circle cx="100" cy="100" r="74" fill="none"
+              stroke="rgba(255,255,255,0.2)" stroke-width="1"/>
+
+            <!-- Main orbit ring (tilted, dashed teal) -->
+            <ellipse cx="100" cy="100" rx="96" ry="34" fill="none"
+              stroke="#00C9A7" stroke-width="1.8" stroke-dasharray="6 4" opacity=".8"
+              transform="rotate(-35,100,100)"/>
+
+            <!-- Second orbit (blue, opposite tilt) -->
+            <ellipse cx="100" cy="100" rx="88" ry="28" fill="none"
+              stroke="#2E9CFF" stroke-width="1" stroke-dasharray="3 5" opacity=".45"
+              transform="rotate(40,100,100)"/>
+
+            <!-- Leaf nodes on main orbit -->
+            <g transform="rotate(-35,100,100)">
+              <!-- Left node -->
+              <circle cx="4" cy="100" r="6" fill="#00C9A7"/>
+              <path d="M4 100 Q8 93 12 97 Q8 103 4 100Z" fill="rgba(255,255,255,.8)"/>
+              <!-- Right node -->
+              <circle cx="196" cy="100" r="5" fill="#00C9A7" opacity=".7"/>
+            </g>
+
+            <!-- Satellite on second orbit (gold dot) -->
+            <g transform="rotate(40,100,100)">
+              <circle cx="12" cy="100" r="4.5" fill="#F5C518"/>
+              <circle cx="12" cy="100" r="7" fill="none" stroke="#F5C518" stroke-width="1" opacity=".4"/>
+              <!-- Tiny solar panel lines -->
+              <line x1="7" y1="100" x2="2" y2="100" stroke="#F5C518" stroke-width="1.2" opacity=".6"/>
+              <line x1="17" y1="100" x2="22" y2="100" stroke="#F5C518" stroke-width="1.2" opacity=".6"/>
+            </g>
+
+            <!-- Top cloud node decoration -->
+            <circle cx="100" cy="20" r="4" fill="rgba(255,255,255,0.5)"/>
+            <ellipse cx="100" cy="20" rx="9" ry="4" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="0.8"/>
+
+            <!-- Specular highlight -->
+            <ellipse cx="78" cy="68" rx="22" ry="14"
+              fill="rgba(255,255,255,0.14)" transform="rotate(-20,78,68)"/>
+            <ellipse cx="72" cy="62" rx="8" ry="5"
+              fill="rgba(255,255,255,0.22)" transform="rotate(-20,72,62)"/>
+          </svg>
+
+          <!-- Brand name -->
+          <div class="about-logo-brand">
+            <span class="gis">GIS</span><span class="dot">.</span><span class="ight">ight</span>
+          </div>
+
+          <!-- Tagline -->
+          <div class="about-logo-tagline">Where Data Meets The Earth</div>
+
+          <!-- Chips -->
+          <div class="about-logo-chips">
+            <span class="about-logo-chip teal"><i class="fa-solid fa-satellite"></i> Remote Sensing</span>
+            <span class="about-logo-chip blue"><i class="fa-solid fa-map"></i> GIS</span>
+            <span class="about-logo-chip green"><i class="fa-solid fa-tree"></i> Environment</span>
+          </div>
+        </div>
+
+        <!-- Badge kiri bawah -->
+        <div class="about-badge-float">
+          <div>
+            <div class="num">2024</div>
+            <div class="lbl">Tahun Berdiri</div>
+          </div>
+        </div>
+
+        <!-- Badge kanan bawah -->
+        <div class="about-badge-float-2">
+          <div>
+            <div class="num">1K<span style="font-size:14px;color:var(--gray-400)">+</span></div>
+            <div class="lbl">Komunitas Aktif</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="about-content reveal">
+        <div class="tag tag-teal" style="margin-bottom:14px">Tentang GIS.ight</div>
+        <h2>Platform <span>Geospasial</span> yang Terbuka untuk Semua</h2>
+        <div class="about-tagline">
+          <i class="fa-solid fa-quote-left"></i>
+          Where Data Meets The Earth
+        </div>
+        <p>
+          GIS.ight lahir dari semangat untuk membuat ilmu penginderaan jauh dan GIS lebih mudah diakses oleh akademisi, mahasiswa, dan profesional di Indonesia.
+        </p>
+        <p>
+          Kami percaya bahwa data spasial yang baik adalah fondasi dari keputusan yang tepat — baik dalam perencanaan wilayah, pengelolaan lingkungan, maupun penelitian ilmiah.
+        </p>
+        <div class="about-list">
+          <div class="about-list-item">
+            <div class="about-list-icon"><i class="fa-solid fa-check"></i></div>
+            <span>Konten edukatif berbasis data satelit nyata — Landsat, Sentinel, dan MODIS</span>
+          </div>
+          <div class="about-list-item">
+            <div class="about-list-icon"><i class="fa-solid fa-check"></i></div>
+            <span>WebGIS interaktif yang dapat diakses langsung dari browser tanpa instalasi</span>
+          </div>
+          <div class="about-list-item">
+            <div class="about-list-icon"><i class="fa-solid fa-check"></i></div>
+            <span>Publikasi ilmiah dan hasil riset yang dibagikan secara terbuka kepada komunitas</span>
+          </div>
+          <div class="about-list-item">
+            <div class="about-list-icon"><i class="fa-solid fa-check"></i></div>
+            <span>Komunitas aktif di Instagram dengan konten informatif mingguan</span>
+          </div>
+        </div>
+        <a href="informasi.html" class="btn btn-primary">
+          <i class="fa-solid fa-arrow-right"></i>
+          Lihat Konten Kami
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOKUS
+============================================================ -->
+<section id="focus" class="section-pad">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="eyebrow">Apa yang Kami Lakukan</div>
+      <h2>Empat Pilar Platform GIS.ight</h2>
+      <p>Kami berkomitmen menghadirkan konten geospasial berkualitas tinggi yang relevan dan bermanfaat bagi komunitas ilmiah Indonesia.</p>
+    </div>
+    <div class="focus-grid">
+      <div class="focus-card reveal">
+        <div class="focus-icon blue"><i class="fa-solid fa-satellite"></i></div>
+        <h3>Penginderaan Jauh</h3>
+        <p>Memanfaatkan citra satelit multispektral untuk analisis lingkungan, pertanian, kehutanan, dan monitoring perubahan lahan secara temporal.</p>
+        <a href="informasi.html" class="link-arrow">Pelajari lebih lanjut <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="focus-card reveal">
+        <div class="focus-icon teal"><i class="fa-solid fa-map"></i></div>
+        <h3>GIS & Analisis Spasial</h3>
+        <p>Mengolah dan memvisualisasikan data vektor dan raster untuk mendukung pengambilan keputusan berbasis data yang akurat dan terukur.</p>
+        <a href="informasi.html" class="link-arrow">Pelajari lebih lanjut <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="focus-card reveal">
+        <div class="focus-icon purple"><i class="fa-solid fa-desktop"></i></div>
+        <h3>WebGIS Interaktif</h3>
+        <p>Menyajikan hasil analisis spasial dalam bentuk peta interaktif yang mudah diakses kapan saja dan di mana saja tanpa software khusus.</p>
+        <a href="#webgis-teaser" class="link-arrow">Pelajari lebih lanjut <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+      <div class="focus-card reveal">
+        <div class="focus-icon green"><i class="fa-solid fa-flask"></i></div>
+        <h3>Penelitian & Publikasi</h3>
+        <p>Mengembangkan metode analisis geospasial dan mempublikasikan hasilnya melalui jurnal ilmiah, prosiding, dan platform akademik.</p>
+        <a href="publikasi.html" class="link-arrow">Pelajari lebih lanjut <i class="fa-solid fa-arrow-right"></i></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     KONTEN TERBARU
+============================================================ -->
+<section id="konten" class="section-pad">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="eyebrow">Informasi Terbaru</div>
+      <h2>Konten & Infografis Geospasial</h2>
+      <p>Poster dan infografis informatif yang kami bagikan rutin — dari konsep dasar hingga analisis lanjutan penginderaan jauh dan GIS.</p>
+    </div>
+    <div class="konten-grid">
+
+      <!-- Card 1 -->
+      <a href="informasi.html" class="konten-card reveal">
+        <div class="konten-img">
+          <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="300" fill="#1a3a0a"/>
+            <rect x="0" y="0" width="400" height="300" fill="url(#ndvi-grad)"/>
+            <defs>
+              <linearGradient id="ndvi-grad" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#b91c1c"/>
+                <stop offset="35%" stop-color="#f97316"/>
+                <stop offset="65%" stop-color="#84cc16"/>
+                <stop offset="100%" stop-color="#166534"/>
+              </linearGradient>
+            </defs>
+            <path d="M0 80 Q80 55 160 70 Q240 85 320 55 Q370 40 400 60 L400 220 Q340 235 270 215 Q190 193 120 218 Q60 235 0 220Z" fill="rgba(0,0,0,.3)"/>
+            <text x="200" y="155" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="36" font-family="Space Grotesk,sans-serif" font-weight="700">NDVI</text>
+            <text x="200" y="178" text-anchor="middle" fill="rgba(255,255,255,.55)" font-size="13" font-family="Inter,sans-serif">Indeks Vegetasi</text>
+          </svg>
+          <div class="konten-img-label">
+            <i class="fa-solid fa-leaf" style="color:var(--teal)"></i>
+            Remote Sensing
+          </div>
+        </div>
+        <div class="konten-card-body">
+          <div class="konten-meta">
+            <span class="tag tag-teal">Remote Sensing</span>
+            <span class="konten-date">12 Mei 2024</span>
+          </div>
+          <h3>Apa itu NDVI? Pengertian, Manfaat, dan Cara Menghitungnya</h3>
+          <p>Normalized Difference Vegetation Index — indeks utama untuk memantau kesehatan dan kerapatan vegetasi dari data satelit.</p>
+          <div class="konten-tags">
+            <span class="konten-tag">NDVI</span>
+            <span class="konten-tag">Landsat 8</span>
+            <span class="konten-tag">Vegetasi</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 2 -->
+      <a href="informasi.html" class="konten-card reveal">
+        <div class="konten-img">
+          <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="300" fill="#0a1a3a"/>
+            <circle cx="200" cy="150" r="110" fill="none" stroke="#2e9cff" stroke-width="1.5" opacity=".5"/>
+            <circle cx="200" cy="150" r="75" fill="none" stroke="#2e9cff" stroke-width="1" opacity=".3"/>
+            <circle cx="200" cy="150" r="40" fill="none" stroke="#00c9a7" stroke-width="1" opacity=".4"/>
+            <line x1="0" y1="150" x2="400" y2="150" stroke="#2e9cff" stroke-width=".8" opacity=".3"/>
+            <line x1="200" y1="0" x2="200" y2="300" stroke="#2e9cff" stroke-width=".8" opacity=".3"/>
+            <line x1="0" y1="0" x2="400" y2="300" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+            <line x1="400" y1="0" x2="0" y2="300" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+            <text x="200" y="142" text-anchor="middle" fill="rgba(255,255,255,.85)" font-size="16" font-family="Space Grotesk,sans-serif" font-weight="600">Google</text>
+            <text x="200" y="163" text-anchor="middle" fill="#00c9a7" font-size="16" font-family="Space Grotesk,sans-serif" font-weight="700">Earth Engine</text>
+          </svg>
+          <div class="konten-img-label">
+            <i class="fa-brands fa-google" style="color:#4285f4"></i>
+            GEE
+          </div>
+        </div>
+        <div class="konten-card-body">
+          <div class="konten-meta">
+            <span class="tag tag-blue">GIS</span>
+            <span class="konten-date">8 Mei 2024</span>
+          </div>
+          <h3>Mengenal Google Earth Engine untuk Analisis Spasial Skala Besar</h3>
+          <p>Platform cloud computing berbasis geospasial yang memungkinkan analisis data satelit skala global secara efisien.</p>
+          <div class="konten-tags">
+            <span class="konten-tag">GEE</span>
+            <span class="konten-tag">Cloud</span>
+            <span class="konten-tag">Python</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Card 3 -->
+      <a href="informasi.html" class="konten-card reveal">
+        <div class="konten-img">
+          <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="400" height="300" fill="#1a0a2a"/>
+            <defs>
+              <linearGradient id="lst-grad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#1d4ed8"/>
+                <stop offset="33%" stop-color="#16a34a"/>
+                <stop offset="66%" stop-color="#f97316"/>
+                <stop offset="100%" stop-color="#dc2626"/>
+              </linearGradient>
+            </defs>
+            <rect x="60" y="30" width="280" height="240" rx="6" fill="url(#lst-grad)" opacity=".7"/>
+            <path d="M60 120 Q120 105 180 130 Q240 155 300 110 Q340 80 400 95 L400 300 L0 300 L0 140Z" fill="rgba(220,38,38,.3)"/>
+            <text x="200" y="148" text-anchor="middle" fill="rgba(255,255,255,.9)" font-size="28" font-family="Space Grotesk,sans-serif" font-weight="700">LST</text>
+            <text x="200" y="170" text-anchor="middle" fill="rgba(255,255,255,.5)" font-size="11" font-family="Inter,sans-serif">Land Surface Temperature</text>
+            <rect x="340" y="40" width="14" height="180" rx="3" fill="url(#lst-grad)"/>
+            <text x="360" y="50"  fill="rgba(255,255,255,.5)" font-size="9" font-family="Inter,sans-serif">40°C</text>
+            <text x="360" y="225" fill="rgba(255,255,255,.5)" font-size="9" font-family="Inter,sans-serif">20°C</text>
+          </svg>
+          <div class="konten-img-label">
+            <i class="fa-solid fa-temperature-high" style="color:#f97316"></i>
+            Analisis Spasial
+          </div>
+        </div>
+        <div class="konten-card-body">
+          <div class="konten-meta">
+            <span class="tag tag-purple">Tutorial</span>
+            <span class="konten-date">5 Mei 2024</span>
+          </div>
+          <h3>Tutorial LST (Land Surface Temperature) di QGIS dari Citra Landsat</h3>
+          <p>Panduan praktis menghitung suhu permukaan lahan menggunakan Band Thermal Landsat 8/9 di QGIS.</p>
+          <div class="konten-tags">
+            <span class="konten-tag">LST</span>
+            <span class="konten-tag">QGIS</span>
+            <span class="konten-tag">Landsat</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="konten-cta reveal">
+      <a href="informasi.html" class="btn btn-outline">
+        <i class="fa-solid fa-images"></i>
+        Lihat Semua Konten
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     WEBGIS TEASER
+============================================================ -->
+<section id="webgis-teaser" class="section-pad">
+  <div class="container">
+    <div class="webgis-inner">
+      <!-- Text -->
+      <div class="reveal">
+        <div class="tag tag-teal" style="margin-bottom:16px">WebGIS Interaktif</div>
+        <h2 class="webgis-text" style="font-family:var(--font-head);font-size:34px;font-weight:700;color:#fff;line-height:1.2;margin-bottom:16px">
+          Peta yang Berbicara dengan <span style="color:var(--teal)">Data Nyata</span>
+        </h2>
+        <p style="font-size:15.5px;color:rgba(255,255,255,.6);line-height:1.8;margin-bottom:28px">
+          WebGIS GIS.ight menyajikan hasil analisis spasial kami dalam bentuk peta interaktif yang dapat dijelajahi langsung di browser. Tidak perlu instalasi software — cukup klik dan eksplorasi.
+        </p>
+        <div class="webgis-features">
+          <div class="webgis-feat">
+            <i class="fa-solid fa-check-circle"></i>
+            <span><strong>Peta tutupan lahan</strong> berbasis citra Landsat & Sentinel multitemporal</span>
+          </div>
+          <div class="webgis-feat">
+            <i class="fa-solid fa-check-circle"></i>
+            <span><strong>Monitoring deforestasi</strong> dan perubahan penggunaan lahan 2000–2024</span>
+          </div>
+          <div class="webgis-feat">
+            <i class="fa-solid fa-check-circle"></i>
+            <span><strong>Analisis Urban Heat Island</strong> dan distribusi suhu permukaan</span>
+          </div>
+          <div class="webgis-feat">
+            <i class="fa-solid fa-check-circle"></i>
+            <span><strong>Layer interaktif</strong> yang dapat dinyalakan/dimatikan sesuai kebutuhan</span>
+          </div>
+        </div>
+        <a href="webgis.html" class="btn btn-primary">
+          <i class="fa-solid fa-map-location-dot"></i>
+          Buka WebGIS
+        </a>
+      </div>
+
+      <!-- Preview box -->
+      <div class="webgis-preview-box reveal">
+        <div class="webgis-browser-bar">
+          <div class="browser-dots">
+            <span class="r"></span><span class="y"></span><span class="g"></span>
+          </div>
+          <div class="browser-url">gisight.id/webgis</div>
+        </div>
+        <div class="webgis-screen">
+          <svg viewBox="0 0 480 360" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+            <rect width="480" height="360" fill="#071830"/>
+            <path d="M0 95 Q60 70 130 90 Q200 110 280 80 Q360 52 460 85 L480 92 L480 265 Q400 290 320 268 Q240 245 160 272 Q90 292 0 272Z" fill="#1a4a2e" opacity=".78"/>
+            <path d="M0 118 Q28 105 55 114 L55 268 Q28 282 0 272Z" fill="#1a4a2e" opacity=".6"/>
+            <path d="M110 62 Q170 42 220 68 Q256 84 270 58 L282 172 Q256 192 220 178 Q170 158 110 175Z" fill="#0f5e3a" opacity=".82"/>
+            <path d="M295 72 Q355 50 410 76 Q445 92 468 68 L478 170 L295 180Z" fill="#1a4a2e" opacity=".68"/>
+            <circle cx="198" cy="128" r="7" fill="#ef4444" opacity=".9"/>
+            <circle cx="198" cy="128" r="15" fill="#ef4444" opacity=".18"/>
+            <circle cx="345" cy="112" r="5" fill="#f97316" opacity=".8"/>
+            <circle cx="400" cy="145" r="6" fill="#ef4444" opacity=".75"/>
+            <circle cx="135" cy="148" r="4" fill="#f97316" opacity=".65"/>
+            <path d="M55 88 Q80 118 98 142 Q115 163 138 180 Q162 197 190 208" stroke="#2e9cff" stroke-width="1.5" fill="none" opacity=".5"/>
+            <line x1="0" y1="120" x2="480" y2="120" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+            <line x1="0" y1="200" x2="480" y2="200" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+            <line x1="0" y1="280" x2="480" y2="280" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+            <line x1="96"  y1="0" x2="96"  y2="360" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+            <line x1="192" y1="0" x2="192" y2="360" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+            <line x1="288" y1="0" x2="288" y2="360" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+            <line x1="384" y1="0" x2="384" y2="360" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+            <rect x="16" y="330" width="70" height="3" fill="rgba(255,255,255,.22)" rx="1"/>
+            <text x="90" y="335" fill="rgba(255,255,255,.3)" font-size="9" font-family="Inter,sans-serif">50 km</text>
+          </svg>
+          <div class="webgis-screen-label">
+            <div class="screen-ping"></div>
+            Peta Interaktif WebGIS
+          </div>
+        </div>
+        <div class="webgis-toolbar">
+          <i class="fa-solid fa-layer-group" style="color:rgba(255,255,255,.4);font-size:14px"></i>
+          <span style="font-size:12px;color:rgba(255,255,255,.4)">Layer aktif:</span>
+          <span class="layer-chip"><i class="fa-solid fa-circle" style="font-size:7px"></i> Tutupan Lahan 2024</span>
+          <span class="layer-chip"><i class="fa-solid fa-circle" style="font-size:7px"></i> NDVI</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PUBLIKASI
+============================================================ -->
+<section id="publikasi" class="section-pad" style="background:var(--gray-50)">
+  <div class="container">
+    <div class="section-header reveal">
+      <div class="eyebrow">Karya Ilmiah</div>
+      <h2>Publikasi & Kontribusi Riset</h2>
+      <p>Dokumentasi hasil penelitian dan kontribusi kami pada komunitas geospasial melalui jurnal dan platform akademik.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-bottom:32px">
+      <div class="konten-card reveal" style="cursor:default">
+        <div class="konten-card-body" style="padding-top:22px">
+          <span class="tag tag-blue" style="margin-bottom:14px">Jurnal</span>
+          <h3 style="font-size:15px;font-weight:600;color:var(--gray-800);line-height:1.45;margin-bottom:10px">
+            Analisis Spasio-Temporal Deforestasi dan Dampaknya terhadap Neraca Air di Wilayah Pertambangan Kabupaten Lahat
+          </h3>
+          <p style="font-size:12.5px;color:var(--gray-500);margin-bottom:14px">
+            Jurnal Penginderaan Jauh Indonesia · Vol. 21, No. 1
+          </p>
+          <div style="font-size:11.5px;color:var(--gray-400);margin-bottom:14px">
+            <i class="fa-regular fa-calendar" style="margin-right:4px"></i>2024
+          </div>
+          <a href="publikasi.html" class="link-arrow">Baca Publikasi <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="konten-card reveal" style="cursor:default">
+        <div class="konten-card-body" style="padding-top:22px">
+          <span class="tag tag-amber" style="margin-bottom:14px">Prosiding</span>
+          <h3 style="font-size:15px;font-weight:600;color:var(--gray-800);line-height:1.45;margin-bottom:10px">
+            Pemanfaatan Citra Sentinel-2 untuk Pemetaan Tutupan Lahan di Daerah Tropis dengan Pendekatan Machine Learning
+          </h3>
+          <p style="font-size:12.5px;color:var(--gray-500);margin-bottom:14px">
+            Seminar Nasional Penginderaan Jauh · LAPAN
+          </p>
+          <div style="font-size:11.5px;color:var(--gray-400);margin-bottom:14px">
+            <i class="fa-regular fa-calendar" style="margin-right:4px"></i>2023
+          </div>
+          <a href="publikasi.html" class="link-arrow">Baca Publikasi <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <div class="konten-card reveal" style="cursor:default">
+        <div class="konten-card-body" style="padding-top:22px">
+          <span class="tag tag-blue" style="margin-bottom:14px">Jurnal</span>
+          <h3 style="font-size:15px;font-weight:600;color:var(--gray-800);line-height:1.45;margin-bottom:10px">
+            Analisis Land Surface Temperature (LST) dan Kaitannya dengan Urban Heat Island di Kota Palembang
+          </h3>
+          <p style="font-size:12.5px;color:var(--gray-500);margin-bottom:14px">
+            Jurnal Geografi dan Lingkungan · Vol. 8, No. 2
+          </p>
+          <div style="font-size:11.5px;color:var(--gray-400);margin-bottom:14px">
+            <i class="fa-regular fa-calendar" style="margin-right:4px"></i>2023
+          </div>
+          <a href="publikasi.html" class="link-arrow">Baca Publikasi <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+    <div class="konten-cta reveal">
+      <a href="publikasi.html" class="btn btn-outline">
+        <i class="fa-solid fa-file-lines"></i>
+        Lihat Semua Publikasi
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     PARTNERS
+============================================================ -->
+<section id="partners" class="section-pad-sm">
+  <div class="container">
+    <p class="partners-label">Mitra & Sumber Data</p>
+  </div>
+  <div class="partners-row">
+    <div class="partners-track">
+      <div class="partner-item"><i class="fa-solid fa-globe"></i> BIG</div>
+      <div class="partner-divider"></div>
+      <div class="partner-item"><i class="fa-solid fa-flask"></i> BRIN</div>
+      <div class="partner-divider"></div>
+      <div class="partner-item"><i class="fa-solid fa-satellite"></i> LAPAN</div>
+      <div class="partner-divider"></div>
+      <div class="partner-item"><i class="fa-solid fa-mountain"></i> USGS</div>
+      <div class="partner-divider"></div>
+      <div class="partner-item"><i class="fa-solid fa-earth-europe"></i> ESA</div>
+      <div class="partner-divider"></div>
+      <div class="partner-item"><i class="fa-brands fa-google"></i> Google Earth Engine</div>
+      <div class="partner-divider"></div>
+      <div class="partner-item"><i class="fa-solid fa-map"></i> OpenStreetMap</div>
+      <div class="partner-divider"></div>
+      <div class="partner-item"><i class="fa-solid fa-database"></i> Copernicus</div>
+      <div class="partner-divider"></div>
+      <!-- duplicate for seamless loop -->
+      <div class="partner-item"><i class="fa-solid fa-globe"></i> BIG</div>
+      <div class="partner-divider"></div>
+      <div class="partner-item"><i class="fa-solid fa-flask"></i> BRIN</div>
+      <div class="partner-divider"></div>
+      <div class="partner-item"><i class="fa-solid fa-satellite"></i> LAPAN</div>
+      <div class="partner-divider"></div>
+      <div class="partner-item"><i class="fa-solid fa-mountain"></i> USGS</div>
+      <div class="partner-divider"></div>
+      <div class="partner-item"><i class="fa-solid fa-earth-europe"></i> ESA</div>
+      <div class="partner-divider"></div>
+      <div class="partner-item"><i class="fa-brands fa-google"></i> Google Earth Engine</div>
+      <div class="partner-divider"></div>
+      <div class="partner-item"><i class="fa-solid fa-map"></i> OpenStreetMap</div>
+      <div class="partner-divider"></div>
+      <div class="partner-item"><i class="fa-solid fa-database"></i> Copernicus</div>
+      <div class="partner-divider"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     NEWSLETTER
+============================================================ -->
+<section id="newsletter" class="section-pad">
+  <div class="container">
+    <div class="newsletter-inner">
+      <div class="newsletter-text reveal">
+        <div class="eyebrow">Tetap Terhubung</div>
+        <h2>Dapatkan Update Terbaru</h2>
+        <p>Berlangganan newsletter kami untuk mendapatkan konten terbaru seputar penginderaan jauh, GIS, dan analisis spasial langsung di inbox Anda.</p>
+        <div class="nl-perks">
+          <div class="nl-perk"><i class="fa-solid fa-check"></i> Konten informatif mingguan</div>
+          <div class="nl-perk"><i class="fa-solid fa-check"></i> Update proyek WebGIS terbaru</div>
+          <div class="nl-perk"><i class="fa-solid fa-check"></i> Notifikasi publikasi ilmiah</div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="newsletter-form">
+          <input type="email" id="nlEmail" placeholder="Masukkan email Anda" />
+          <button class="btn btn-primary" id="nlBtn">
+            <i class="fa-solid fa-paper-plane"></i> Berlangganan
+          </button>
+        </div>
+        <p class="nl-note"><i class="fa-solid fa-lock"></i> Privasi Anda terjaga. Tidak ada spam.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer id="footer">
+  <div id="kontak" class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-brand-logo">
+          <svg width="42" height="42" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" style="border-radius:10px;background:rgba(255,255,255,0.06);padding:3px;flex-shrink:0">
+            <defs>
+              <radialGradient id="fGlobeG" cx="38%" cy="35%" r="65%">
+                <stop offset="0%"   stop-color="#3bcfff"/>
+                <stop offset="45%"  stop-color="#1a7ad4"/>
+                <stop offset="100%" stop-color="#0d3a8a"/>
+              </radialGradient>
+              <radialGradient id="fLandG" cx="40%" cy="30%" r="70%">
+                <stop offset="0%"   stop-color="#52d68a"/>
+                <stop offset="100%" stop-color="#1a7a3c"/>
+              </radialGradient>
+              <clipPath id="fClip"><circle cx="20" cy="20" r="14.5"/></clipPath>
+            </defs>
+            <circle cx="20" cy="20" r="14.5" fill="url(#fGlobeG)"/>
+            <g clip-path="url(#fClip)">
+              <path d="M18 7 Q24 6 28 10 Q31 13 30 17 Q29 20 26 21 Q23 23 22 26 Q21 28 20 30 Q18 28 17 24 Q16 20 14 18 Q12 15 13 11 Z" fill="url(#fLandG)" opacity=".9"/>
+              <path d="M8 11 Q11 9 13 12 Q14 15 12 19 Q10 22 9 25 Q8 22 7 18 Q6 14 8 11Z" fill="url(#fLandG)" opacity=".85"/>
+              <path d="M27 24 Q30 23 31 26 Q31 28 29 29 Q27 29 26 27 Z" fill="url(#fLandG)" opacity=".8"/>
+            </g>
+            <g clip-path="url(#fClip)" stroke="rgba(255,255,255,0.35)" stroke-width="0.6" fill="none">
+              <ellipse cx="20" cy="20" rx="14.5" ry="5.5"/>
+              <ellipse cx="20" cy="20" rx="14.5" ry="10"/>
+              <ellipse cx="20" cy="20" rx="5.5"  ry="14.5"/>
+              <ellipse cx="20" cy="20" rx="10"   ry="14.5"/>
+            </g>
+            <circle cx="20" cy="20" r="14.5" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="0.7"/>
+            <ellipse cx="20" cy="20" rx="19" ry="7" fill="none" stroke="#3cd89a" stroke-width="1.2" stroke-dasharray="3.5 2.5" opacity=".85" transform="rotate(-30,20,20)"/>
+            <circle cx="9.5" cy="16.5" r="2" fill="#3cd89a" opacity=".9"/>
+            <circle cx="32" cy="22.5" r="1.6" fill="#f5c518" opacity=".95"/>
+            <ellipse cx="15" cy="14" rx="4" ry="2.5" fill="rgba(255,255,255,0.18)" transform="rotate(-20,15,14)"/>
+          </svg>
+          <div class="footer-brand-logo-text">
+            <span class="gis">GIS</span><span class="dot">.</span><span class="ight">ight</span>
+          </div>
+        </div>
+        <div class="footer-tagline">Where Data Meets The Earth</div>
+        <p>Platform edukasi dan informasi di bidang Penginderaan Jauh, GIS, dan Analisis Spasial untuk mendukung penelitian, pembelajaran, dan pengambilan keputusan berbasis data.</p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/gis.ight" target="_blank" class="social-btn" aria-label="Instagram">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a href="#" class="social-btn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#" class="social-btn" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          <a href="#" class="social-btn" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h5>Navigasi</h5>
+        <ul>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#about">Tentang Kami</a></li>
+          <li><a href="informasi.html">Informasi</a></li>
+          <li><a href="webgis.html">WebGIS</a></li>
+          <li><a href="publikasi.html">Publikasi</a></li>
+          <li><a href="#kontak">Kontak</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Kategori</h5>
+        <ul>
+          <li><a href="informasi.html">Remote Sensing</a></li>
+          <li><a href="informasi.html">GIS & Pemetaan</a></li>
+          <li><a href="informasi.html">Google Earth Engine</a></li>
+          <li><a href="informasi.html">Tutorial QGIS</a></li>
+          <li><a href="informasi.html">Analisis Spasial</a></li>
+          <li><a href="#">Dataset</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col" id="kontak">
+        <h5>Kontak</h5>
+        <div class="footer-contact">
+          <div class="fc-row">
+            <i class="fa-solid fa-envelope"></i>
+            <span>gisight.edu@gmail.com</span>
+          </div>
+          <div class="fc-row">
+            <i class="fa-brands fa-instagram"></i>
+            <span>@gis.ight</span>
+          </div>
+          <div class="fc-row">
+            <i class="fa-brands fa-whatsapp"></i>
+            <span>+62 xxx xxxx xxxx</span>
+          </div>
+          <div class="fc-row">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>Palembang, Sumatera Selatan, Indonesia</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2024 GIS.ight — Where Data Meets The Earth. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Kebijakan Privasi</a>
+        <a href="#">Syarat & Ketentuan</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Back to top -->
+<button id="btt" aria-label="Kembali ke atas">
+  <i class="fa-solid fa-chevron-up"></i>
+</button>
+
+<!-- ============================================================
+     SCRIPTS
+============================================================ -->
+<script>
+// ============================================================
+// HERO CANVAS — Bumi dari luar angkasa + satelit orbiting
+// ============================================================
+(function() {
+  const canvas = document.getElementById('heroCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+
+  let W, H, cx, cy, earthR;
+  let mouseX = 0, mouseY = 0;
+  let t = 0;
+
+  // --- Stars ---
+  const STAR_COUNT = 280;
+  const stars = [];
+  function initStars() {
+    stars.length = 0;
+    for (let i = 0; i < STAR_COUNT; i++) {
+      stars.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        r: Math.random() * 1.4 + 0.2,
+        alpha: Math.random() * 0.7 + 0.2,
+        twinkle: Math.random() * Math.PI * 2
+      });
+    }
+  }
+
+  // --- Satellites ---
+  const satellites = [
+    { orbit: 1.32, speed: 0.0045, size: 5, color: '#7bc7ff', label: 'Landsat 9',   angle: 0,    tilt: 18 },
+    { orbit: 1.58, speed: 0.0028, size: 4, color: '#00C9A7', label: 'Sentinel-2',  angle: 2.1,  tilt: -25 },
+    { orbit: 1.82, speed: 0.0018, size: 4, color: '#F5C518', label: 'MODIS',       angle: 4.5,  tilt: 35 },
+    { orbit: 2.05, speed: 0.0013, size: 3, color: '#6FCC6F', label: 'ISS',         angle: 1.0,  tilt: -50 },
+  ];
+
+  // --- Continent paths (simplified, scaled to unit circle) ---
+  // (precomputed simplified polygon data for a globe-like appearance)
+  const continents = [
+    // Eurasia blob
+    { pts: [ [0.05,-.42],[.18,-.48],[.32,-.45],[.42,-.38],[.45,-.28],[.38,-.18],[.28,-.12],[.15,-.10],[.05,-.15],[-.05,-.22],[-.02,-.35] ], c:'#1a5c2a' },
+    // Africa
+    { pts: [ [.10,-.10],[.20,-.08],[.25,.02],[.24,.18],[.18,.32],[.08,.34],[.02,.22],[.00,.08] ], c:'#1a6b2f' },
+    // North America
+    { pts: [ [-.45,-.38],[-.30,-.42],[-.18,-.38],[-.10,-.28],[-.12,-.15],[-.22,-.10],[-.38,-.15],[-.48,-.25] ], c:'#174d22' },
+    // South America
+    { pts: [ [-.28,-.05],[-.18,-.02],[-.14,.08],[-.16,.24],[-.22,.30],[-.28,.22],[-.30,.10] ], c:'#1a6b2f' },
+    // Australia
+    { pts: [ [.32,.18],[.42,.16],[.46,.24],[.42,.30],[.32,.28],[.28,.22] ], c:'#1a5c2a' },
+  ];
+
+  function resize() {
+    W = canvas.offsetWidth;
+    H = canvas.offsetHeight;
+    canvas.width  = W;
+    canvas.height = H;
+    cx = W * 0.68;  // bumi di sisi kanan
+    cy = H * 0.5;
+    earthR = Math.min(W, H) * 0.30;
+    initStars();
+  }
+
+  function drawStars() {
+    stars.forEach(s => {
+      s.twinkle += 0.018;
+      const a = s.alpha * (0.6 + 0.4 * Math.sin(s.twinkle));
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI*2);
+      ctx.fillStyle = `rgba(255,255,255,${a})`;
+      ctx.fill();
+    });
+  }
+
+  function drawEarth() {
+    // Parallax: bumi bergerak sedikit ikut mouse
+    const px = (mouseX / W - 0.5) * -18;
+    const py = (mouseY / H - 0.5) * -12;
+    const ex = cx + px;
+    const ey = cy + py;
+
+    // Atmosphere glow
+    const atmos = ctx.createRadialGradient(ex, ey, earthR * 0.92, ex, ey, earthR * 1.22);
+    atmos.addColorStop(0, 'rgba(30,120,255,0.22)');
+    atmos.addColorStop(0.5, 'rgba(30,180,255,0.07)');
+    atmos.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.beginPath();
+    ctx.arc(ex, ey, earthR * 1.22, 0, Math.PI*2);
+    ctx.fillStyle = atmos;
+    ctx.fill();
+
+    // Ocean base
+    const ocean = ctx.createRadialGradient(ex - earthR*0.3, ey - earthR*0.3, earthR*0.1, ex, ey, earthR);
+    ocean.addColorStop(0,   '#1a5f9e');
+    ocean.addColorStop(0.4, '#0f3d70');
+    ocean.addColorStop(0.8, '#081e40');
+    ocean.addColorStop(1,   '#040e22');
+    ctx.beginPath();
+    ctx.arc(ex, ey, earthR, 0, Math.PI*2);
+    ctx.fillStyle = ocean;
+    ctx.fill();
+
+    // Continents (clip to earth sphere)
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(ex, ey, earthR * 0.995, 0, Math.PI*2);
+    ctx.clip();
+
+    // Slow rotation via time
+    const rot = t * 0.0004;
+    continents.forEach(cont => {
+      ctx.beginPath();
+      cont.pts.forEach((p, i) => {
+        // Rotate point
+        const angle = Math.atan2(p[1], p[0]) + rot;
+        const dist  = Math.sqrt(p[0]*p[0] + p[1]*p[1]);
+        const rx = ex + dist * earthR * Math.cos(angle);
+        const ry = ey + dist * earthR * Math.sin(angle);
+        i === 0 ? ctx.moveTo(rx, ry) : ctx.lineTo(rx, ry);
+      });
+      ctx.closePath();
+      ctx.fillStyle = cont.c;
+      ctx.fill();
+      // coast texture
+      ctx.strokeStyle = 'rgba(0,255,150,0.08)';
+      ctx.lineWidth = 0.5;
+      ctx.stroke();
+    });
+    ctx.restore();
+
+    // Day/Night terminator
+    const termX = ex + earthR * 0.2;
+    const terminator = ctx.createRadialGradient(termX, ey - earthR*0.1, earthR*0.3, ex + earthR*0.5, ey, earthR*1.1);
+    terminator.addColorStop(0, 'rgba(0,0,0,0)');
+    terminator.addColorStop(0.55, 'rgba(0,0,0,0)');
+    terminator.addColorStop(0.75, 'rgba(0,0,0,0.35)');
+    terminator.addColorStop(1, 'rgba(0,0,0,0.72)');
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(ex, ey, earthR, 0, Math.PI*2);
+    ctx.clip();
+    ctx.fillStyle = terminator;
+    ctx.fillRect(ex - earthR, ey - earthR, earthR*2, earthR*2);
+    ctx.restore();
+
+    // City lights on night side (tiny dots)
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(ex, ey, earthR * 0.995, 0, Math.PI*2);
+    ctx.clip();
+    const cityLights = [
+      [0.42, -0.32], [0.28, -0.25], [0.18, -0.40], [-0.30, -0.38],
+      [-0.20, -0.30], [-0.15, -0.20], [0.10, 0.20], [0.35, 0.22],
+    ];
+    cityLights.forEach(cl => {
+      const angle = Math.atan2(cl[1], cl[0]) + rot;
+      const dist  = Math.sqrt(cl[0]*cl[0]+cl[1]*cl[1]);
+      const lx = ex + dist * earthR * Math.cos(angle);
+      const ly = ey + dist * earthR * Math.sin(angle);
+      // only show on night side (right portion)
+      if (lx > ex + earthR * 0.1) {
+        ctx.beginPath();
+        ctx.arc(lx, ly, 1.2, 0, Math.PI*2);
+        ctx.fillStyle = `rgba(255,230,120,${0.5 + 0.4*Math.sin(t*0.05+lx)})`;
+        ctx.fill();
+        // glow
+        const lg = ctx.createRadialGradient(lx, ly, 0, lx, ly, 5);
+        lg.addColorStop(0, 'rgba(255,200,50,0.18)');
+        lg.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = lg;
+        ctx.beginPath();
+        ctx.arc(lx, ly, 5, 0, Math.PI*2);
+        ctx.fill();
+      }
+    });
+    ctx.restore();
+
+    // Specular highlight (sun glint top-left)
+    const spec = ctx.createRadialGradient(ex - earthR*0.35, ey - earthR*0.38, 0, ex - earthR*0.35, ey - earthR*0.38, earthR*0.55);
+    spec.addColorStop(0, 'rgba(255,255,255,0.18)');
+    spec.addColorStop(0.4, 'rgba(255,255,255,0.04)');
+    spec.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(ex, ey, earthR, 0, Math.PI*2);
+    ctx.clip();
+    ctx.fillStyle = spec;
+    ctx.fillRect(ex - earthR, ey - earthR, earthR*2, earthR*2);
+    ctx.restore();
+
+    // Outer rim glow
+    ctx.beginPath();
+    ctx.arc(ex, ey, earthR, 0, Math.PI*2);
+    ctx.strokeStyle = 'rgba(30,140,255,0.25)';
+    ctx.lineWidth = 2.5;
+    ctx.stroke();
+
+    return { ex, ey };
+  }
+
+  function drawSatellites(ex, ey) {
+    satellites.forEach(sat => {
+      sat.angle += sat.speed;
+
+      const orbitRx = earthR * sat.orbit;
+      const orbitRy = orbitRx * Math.cos(sat.tilt * Math.PI/180);
+
+      // Orbit path (dashed ellipse)
+      ctx.save();
+      ctx.translate(ex, ey);
+      ctx.rotate(sat.tilt * 0.01);
+      ctx.beginPath();
+      ctx.ellipse(0, 0, orbitRx, orbitRy, sat.tilt * Math.PI/180, 0, Math.PI*2);
+      ctx.strokeStyle = `rgba(255,255,255,0.06)`;
+      ctx.setLineDash([3,6]);
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+
+      // Satellite position
+      const sx = ex + orbitRx * Math.cos(sat.angle);
+      const sy = ey + orbitRy * Math.sin(sat.angle);
+
+      // Signal trail
+      const trailLen = 8;
+      for (let i = 0; i < trailLen; i++) {
+        const ta = sat.angle - (i+1) * sat.speed * 3;
+        const tx2 = ex + orbitRx * Math.cos(ta);
+        const ty2 = ey + orbitRy * Math.sin(ta);
+        ctx.beginPath();
+        ctx.arc(tx2, ty2, sat.size * 0.35 * (1 - i/trailLen), 0, Math.PI*2);
+        ctx.fillStyle = sat.color + Math.floor((1 - i/trailLen) * 80).toString(16).padStart(2,'0');
+        ctx.fill();
+      }
+
+      // Satellite body
+      ctx.save();
+      ctx.translate(sx, sy);
+      ctx.rotate(sat.angle + Math.PI/4);
+
+      // Main body
+      ctx.fillStyle = '#c8d8f0';
+      ctx.fillRect(-sat.size*0.6, -sat.size*0.4, sat.size*1.2, sat.size*0.8);
+
+      // Solar panels
+      ctx.fillStyle = '#1a4fa0';
+      ctx.fillRect(-sat.size*1.8, -sat.size*0.25, sat.size*0.9, sat.size*0.5);
+      ctx.fillRect( sat.size*0.9, -sat.size*0.25, sat.size*0.9, sat.size*0.5);
+
+      // Panel grid lines
+      ctx.strokeStyle = 'rgba(100,180,255,0.4)';
+      ctx.lineWidth = 0.5;
+      for (let g = 1; g < 3; g++) {
+        const gx = -sat.size*1.8 + g * sat.size*0.3;
+        ctx.beginPath(); ctx.moveTo(gx, -sat.size*0.25); ctx.lineTo(gx, sat.size*0.25); ctx.stroke();
+        const gx2 = sat.size*0.9 + g * sat.size*0.3;
+        ctx.beginPath(); ctx.moveTo(gx2, -sat.size*0.25); ctx.lineTo(gx2, sat.size*0.25); ctx.stroke();
+      }
+      ctx.restore();
+
+      // Glow around satellite
+      const grd = ctx.createRadialGradient(sx, sy, 0, sx, sy, sat.size * 2.2);
+      grd.addColorStop(0, sat.color + '33');
+      grd.addColorStop(1, sat.color + '00');
+      ctx.beginPath();
+      ctx.arc(sx, sy, sat.size * 2.2, 0, Math.PI*2);
+      ctx.fillStyle = grd;
+      ctx.fill();
+
+      // Signal beam to earth (faint dotted line)
+      const distToEarth = Math.sqrt((sx-ex)**2 + (sy-ey)**2);
+      if (distToEarth > earthR * 1.1 && distToEarth < earthR * 2.5) {
+        ctx.save();
+        ctx.setLineDash([2,5]);
+        ctx.beginPath();
+        ctx.moveTo(sx, sy);
+        // beam toward earth surface
+        const bAngle = Math.atan2(ey - sy, ex - sx);
+        const bx = ex + earthR * Math.cos(bAngle + Math.PI);
+        const by = ey + earthR * Math.sin(bAngle + Math.PI);
+        ctx.lineTo(ex + Math.cos(bAngle) * earthR * 0.98, ey + Math.sin(bAngle) * earthR * 0.98);
+        ctx.strokeStyle = sat.color + '28';
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      // Label (shown near satellite)
+      if (sat.size >= 4) {
+        ctx.font = '9px Inter, sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,0.45)';
+        ctx.fillText(sat.label, sx + sat.size * 2.5, sy - sat.size);
+      }
+    });
+  }
+
+  function frame(ts) {
+    t = ts;
+    ctx.clearRect(0, 0, W, H);
+
+    // Deep space background
+    ctx.fillStyle = '#03080f';
+    ctx.fillRect(0, 0, W, H);
+
+    // Nebula glow (left side — content area stays darker)
+    const neb = ctx.createRadialGradient(W*0.72, H*0.45, 0, W*0.72, H*0.45, W*0.5);
+    neb.addColorStop(0, 'rgba(10,60,140,0.18)');
+    neb.addColorStop(0.4, 'rgba(0,60,30,0.08)');
+    neb.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = neb;
+    ctx.fillRect(0, 0, W, H);
+
+    drawStars();
+    const { ex, ey } = drawEarth();
+    drawSatellites(ex, ey);
+
+    requestAnimationFrame(frame);
+  }
+
+  window.addEventListener('resize', resize);
+  window.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  resize();
+  requestAnimationFrame(frame);
+})();
+
+// Hero panel live timestamp
+function updateHeroTimestamp() {
+  const el = document.getElementById('heroTimestamp');
+  if (!el) return;
+  const now = new Date();
+  const h = String(now.getHours()).padStart(2,'0');
+  const m = String(now.getMinutes()).padStart(2,'0');
+  const s = String(now.getSeconds()).padStart(2,'0');
+  el.textContent = h + ':' + m + ':' + s + ' WIB';
+}
+updateHeroTimestamp();
+setInterval(updateHeroTimestamp, 1000);
+
+// Navbar scroll
+const navbar = document.getElementById('navbar');
+const btt    = document.getElementById('btt');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  navbar.classList.toggle('scrolled', y > 60);
+  btt.classList.toggle('show', y > 400);
+});
+
+// Hamburger
+const hamburger  = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+});
+mobileMenu.querySelectorAll('a').forEach(a =>
+  a.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  })
+);
+
+// Back to top
+btt.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+
+// Active nav
+const sections  = document.querySelectorAll('section[id], div[id]');
+const navLinks  = document.querySelectorAll('.nav-links a');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navLinks.forEach(l => {
+        l.classList.remove('active');
+        if (l.getAttribute('href') === '#' + e.target.id) l.classList.add('active');
+      });
+    }
+  });
+}, { threshold: 0.35 });
+sections.forEach(s => io.observe(s));
+
+// Reveal on scroll
+const revealEls = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 60);
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.12 });
+revealEls.forEach(el => revealObs.observe(el));
+
+// Newsletter
+document.getElementById('nlBtn').addEventListener('click', () => {
+  const inp = document.getElementById('nlEmail');
+  if (inp.value.includes('@')) {
+    inp.value = '';
+    inp.placeholder = '✓ Terima kasih! Anda sudah terdaftar.';
+    setTimeout(() => inp.placeholder = 'Masukkan email Anda', 3500);
+  } else {
+    inp.style.borderColor = '#ef4444';
+    setTimeout(() => inp.style.borderColor = '', 1500);
+  }
+});
+
+// Smooth scroll for all anchor links
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    const id = a.getAttribute('href').slice(1);
+    const el = document.getElementById(id);
+    if (el) { e.preventDefault(); el.scrollIntoView({ behavior:'smooth' }); }
+  });
+});
+</script>
+</body>
+</html>

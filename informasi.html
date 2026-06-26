@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Informasi — GIS.ight</title>
+  <meta name="description" content="Konten informatif, infografis, dan poster edukatif seputar Penginderaan Jauh, GIS, dan Analisis Spasial dari GIS.ight." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+  /* ============================================================
+     RESET & TOKENS
+  ============================================================ */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy:        #0A1628;
+    --navy-mid:    #0D1F3C;
+    --navy-light:  #14274E;
+    --blue:        #1A6FC4;
+    --blue-light:  #2E9CFF;
+    --teal:        #00C9A7;
+    --green:       #4CAF50;
+    --green-light: #6FCC6F;
+    --gold:        #F5C518;
+    --white:       #FFFFFF;
+    --gray-50:     #F8FAFC;
+    --gray-100:    #F1F5F9;
+    --gray-200:    #E2E8F0;
+    --gray-400:    #94A3B8;
+    --gray-500:    #64748B;
+    --gray-600:    #475569;
+    --gray-800:    #1E293B;
+    --font-head:   'Space Grotesk', sans-serif;
+    --font-body:   'Inter', sans-serif;
+    --r-sm:  6px;
+    --r-md:  10px;
+    --r-lg:  16px;
+    --r-xl:  24px;
+    --sh-sm: 0 1px 4px rgba(0,0,0,.08);
+    --sh-md: 0 4px 16px rgba(0,0,0,.12);
+    --sh-lg: 0 8px 32px rgba(0,0,0,.2);
+    --t:     .22s ease;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--font-body);
+    background: var(--white);
+    color: var(--gray-800);
+    font-size: 15px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+  a { text-decoration: none; color: inherit; }
+  img { max-width: 100%; display: block; }
+  button { cursor: pointer; font-family: inherit; border: none; }
+
+  /* ============================================================
+     UTILITIES
+  ============================================================ */
+  .container { max-width: 1160px; margin: 0 auto; padding: 0 24px; }
+  .section-pad    { padding: 88px 0; }
+  .section-pad-sm { padding: 56px 0; }
+
+  .tag {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    letter-spacing: .5px; text-transform: uppercase;
+    padding: 3px 10px; border-radius: 20px;
+  }
+  .tag-blue   { background:#dbeafe; color:#1d4ed8; }
+  .tag-teal   { background:#ccfbf1; color:#0f766e; }
+  .tag-green  { background:#dcfce7; color:#15803d; }
+  .tag-purple { background:#ede9fe; color:#6d28d9; }
+  .tag-amber  { background:#fef3c7; color:#b45309; }
+  .tag-pink   { background:#fce7f3; color:#be185d; }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 24px; border-radius: var(--r-md);
+    font-size: 14px; font-weight: 600;
+    transition: all var(--t); white-space: nowrap;
+  }
+  .btn-primary {
+    background: var(--blue); color: #fff;
+    box-shadow: 0 2px 10px rgba(26,111,196,.38);
+  }
+  .btn-primary:hover { background: #155fa0; transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent; color: var(--blue);
+    border: 1.5px solid var(--blue);
+  }
+  .btn-outline:hover { background: var(--blue); color: #fff; }
+  .btn-sm { padding: 8px 16px; font-size: 13px; }
+  .btn-ig {
+    background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+    color: #fff;
+    box-shadow: 0 2px 10px rgba(253,29,29,.3);
+  }
+  .btn-ig:hover { transform: translateY(-1px); box-shadow: 0 4px 18px rgba(253,29,29,.4); }
+
+  .section-header { text-align: center; margin-bottom: 52px; }
+  .section-header .eyebrow {
+    font-size: 12px; font-weight: 700; letter-spacing: 1.2px;
+    text-transform: uppercase; color: var(--teal); margin-bottom: 10px;
+  }
+  .section-header h2 {
+    font-family: var(--font-head); font-size: 34px; font-weight: 700;
+    color: var(--gray-800); margin-bottom: 14px; line-height: 1.2;
+  }
+  .section-header p {
+    font-size: 16px; color: var(--gray-600);
+    max-width: 540px; margin: 0 auto; line-height: 1.75;
+  }
+
+  .link-arrow {
+    display: inline-flex; align-items: center; gap: 5px;
+    font-size: 13.5px; font-weight: 600; color: var(--blue);
+    transition: gap var(--t);
+  }
+  .link-arrow:hover { gap: 8px; }
+
+  /* ============================================================
+     NAVBAR
+  ============================================================ */
+  #navbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+    background: rgba(10,22,40,.97);
+    backdrop-filter: blur(14px);
+    box-shadow: 0 1px 0 rgba(255,255,255,.06);
+  }
+  .nav-inner {
+    display: flex; align-items: center; height: 68px; gap: 4px;
+  }
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    margin-right: auto; flex-shrink: 0; text-decoration: none;
+  }
+  .nav-logo-img {
+    width: 40px; height: 40px; border-radius: 10px;
+    object-fit: contain; background: rgba(255,255,255,.06); padding: 3px; flex-shrink: 0;
+  }
+  .nav-logo-text {
+    font-family: var(--font-head); font-size: 20px; font-weight: 700; line-height: 1;
+  }
+  .nav-logo-text .gis  { color: #1A6FC4; }
+  .nav-logo-text .dot  { color: var(--gold); }
+  .nav-logo-text .ight { color: var(--green); }
+  .nav-tagline {
+    font-size: 9.5px; font-weight: 400; color: rgba(255,255,255,.45);
+    letter-spacing: .3px; margin-top: 1px;
+  }
+  .nav-links { display: flex; gap: 2px; }
+  .nav-links a {
+    font-size: 13.5px; font-weight: 500; color: rgba(255,255,255,.75);
+    padding: 7px 13px; border-radius: var(--r-sm); transition: all var(--t);
+  }
+  .nav-links a:hover  { color: #fff; background: rgba(255,255,255,.09); }
+  .nav-links a.active { color: var(--teal); }
+  .nav-cta { margin-left: 12px; }
+
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; padding: 6px; margin-left: 8px;
+  }
+  .hamburger span {
+    display: block; width: 22px; height: 2px;
+    background: #fff; border-radius: 2px; transition: all .3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+  .mobile-menu {
+    display: none; position: fixed;
+    top: 68px; left: 0; right: 0; bottom: 0;
+    background: rgba(10,22,40,.98);
+    padding: 16px 24px 32px; z-index: 999; overflow-y: auto;
+  }
+  .mobile-menu.open { display: flex; flex-direction: column; }
+  .mobile-menu a {
+    color: rgba(255,255,255,.8); padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    font-size: 16px; font-weight: 500;
+  }
+  .mobile-menu .btn { margin-top: 20px; justify-content: center; }
+
+  /* ============================================================
+     PAGE HERO — Informasi
+  ============================================================ */
+  #page-hero {
+    background: var(--navy);
+    padding: 140px 0 72px;
+    position: relative; overflow: hidden;
+  }
+  #page-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 70% 60% at 80% 50%, rgba(26,111,196,.14) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 70% at 10% 60%, rgba(0,201,167,.08) 0%, transparent 60%);
+  }
+  /* Grid overlay khas GIS */
+  #page-hero::after {
+    content: '';
+    position: absolute; inset: 0; pointer-events: none;
+    background-image:
+      linear-gradient(rgba(0,201,167,.035) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,201,167,.035) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .page-hero-inner {
+    position: relative; z-index: 2;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 40px; flex-wrap: wrap;
+  }
+  .page-hero-left { flex: 1; min-width: 260px; }
+  .page-hero-breadcrumb {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12.5px; color: rgba(255,255,255,.38);
+    margin-bottom: 18px;
+  }
+  .page-hero-breadcrumb a { color: rgba(255,255,255,.38); transition: color var(--t); }
+  .page-hero-breadcrumb a:hover { color: var(--teal); }
+  .page-hero-breadcrumb i { font-size: 10px; }
+  .page-hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-size: 11.5px; font-weight: 700; letter-spacing: 1.4px;
+    text-transform: uppercase; color: var(--teal);
+    background: rgba(0,201,167,.10);
+    border: 1px solid rgba(0,201,167,.25);
+    padding: 6px 14px; border-radius: 30px; margin-bottom: 22px;
+  }
+  .page-hero-eyebrow .dot-live {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--teal);
+    animation: live-pulse 2.2s ease-in-out infinite; flex-shrink: 0;
+  }
+  @keyframes live-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.4;transform:scale(1.5)} }
+  .page-hero-title {
+    font-family: var(--font-head); font-size: clamp(28px,3.8vw,50px);
+    font-weight: 800; color: #fff; line-height: 1.1;
+    letter-spacing: -1px; margin-bottom: 18px;
+  }
+  .page-hero-title span { color: var(--teal); }
+  .page-hero-desc {
+    font-size: 15.5px; color: rgba(255,255,255,.62);
+    line-height: 1.8; max-width: 480px; margin-bottom: 28px;
+  }
+  /* Right panel — stats */
+  .page-hero-stats {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .ph-stat {
+    background: rgba(8,16,32,.55); border: 1px solid rgba(255,255,255,.1);
+    border-radius: var(--r-lg); backdrop-filter: blur(14px);
+    padding: 14px 20px;
+    display: flex; align-items: center; gap: 14px;
+    transition: border-color var(--t);
+  }
+  .ph-stat:hover { border-color: rgba(0,201,167,.3); }
+  .ph-stat-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+  }
+  .ph-stat-icon.teal  { background: rgba(0,201,167,.18); color: var(--teal); }
+  .ph-stat-icon.blue  { background: rgba(26,111,196,.22); color: #7bc7ff; }
+  .ph-stat-icon.ig    { background: rgba(253,29,29,.15);  color: #fd6b6b; }
+  .ph-stat-num {
+    font-family: var(--font-head); font-size: 20px; font-weight: 700; color: #fff;
+  }
+  .ph-stat-lbl { font-size: 12px; color: rgba(255,255,255,.42); }
+  /* Instagram follow banner */
+  .ig-follow-banner {
+    display: flex; align-items: center; gap: 14px;
+    background: rgba(131,58,180,.12); border: 1px solid rgba(131,58,180,.3);
+    border-radius: var(--r-lg); padding: 14px 20px;
+    margin-top: 6px;
+  }
+  .ig-follow-banner i { font-size: 22px; background: linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .ig-follow-text { flex: 1; }
+  .ig-follow-text strong { color: #fff; font-size: 13.5px; display: block; margin-bottom: 2px; }
+  .ig-follow-text span { font-size: 12px; color: rgba(255,255,255,.45); }
+  .ig-follow-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);
+    color: #fff; font-size: 12.5px; font-weight: 700;
+    padding: 7px 16px; border-radius: 20px;
+    white-space: nowrap; transition: opacity var(--t);
+  }
+  .ig-follow-btn:hover { opacity: .88; }
+
+  /* ============================================================
+     FILTER BAR
+  ============================================================ */
+  #filter-bar {
+    background: var(--white);
+    border-bottom: 1px solid var(--gray-200);
+    position: sticky; top: 68px; z-index: 90;
+  }
+  .filter-inner {
+    display: flex; align-items: center; gap: 8px;
+    padding: 14px 0; overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .filter-inner::-webkit-scrollbar { display: none; }
+  .filter-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 600; color: var(--gray-600);
+    background: var(--gray-100); border: 1.5px solid transparent;
+    padding: 7px 16px; border-radius: 30px;
+    transition: all var(--t); white-space: nowrap; cursor: pointer;
+  }
+  .filter-btn:hover { background: var(--gray-200); color: var(--gray-800); }
+  .filter-btn.active {
+    background: var(--navy); color: #fff; border-color: var(--navy);
+  }
+  .filter-btn i { font-size: 11px; }
+
+  /* ============================================================
+     FEED INFORMASI — INSTAGRAM POSTS
+  ============================================================ */
+  #informasi-feed { background: var(--gray-50); }
+
+  /* Grid utama: kiri besar, kanan kecil-kecil */
+  .feed-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 24px;
+  }
+
+  /* Card wrapper umum */
+  .ig-post-card {
+    background: #fff;
+    border: 1px solid var(--gray-200);
+    border-radius: var(--r-xl);
+    overflow: hidden;
+    transition: all var(--t);
+    display: flex; flex-direction: column;
+  }
+  .ig-post-card:hover {
+    box-shadow: var(--sh-md);
+    transform: translateY(-4px);
+    border-color: transparent;
+  }
+
+  /* Card header — akun info */
+  .ig-card-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 14px 16px 10px;
+  }
+  .ig-avatar {
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);
+    display: flex; align-items: center; justify-content: center;
+    color: #fff; font-size: 14px; font-weight: 700;
+  }
+  .ig-username { font-size: 13px; font-weight: 700; color: var(--gray-800); }
+  .ig-handle   { font-size: 11.5px; color: var(--gray-400); }
+  .ig-logo-badge {
+    margin-left: auto; font-size: 18px;
+    background: linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  /* Embed container */
+  .ig-embed-wrap {
+    width: 100%;
+    background: var(--gray-50);
+    border-top: 1px solid var(--gray-100);
+    border-bottom: 1px solid var(--gray-100);
+    overflow: hidden;
+    display: flex; align-items: flex-start; justify-content: center;
+  }
+  /* Instagram blockquote default styling override */
+  .ig-embed-wrap .instagram-media {
+    min-width: unset !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+  }
+
+  /* Card footer */
+  .ig-card-footer {
+    padding: 14px 16px 18px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .ig-card-meta {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .ig-card-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+  .ig-card-date { font-size: 11.5px; color: var(--gray-400); }
+  .ig-card-caption {
+    font-size: 13.5px; color: var(--gray-600); line-height: 1.65;
+    display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .ig-card-cta {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 10px; border-top: 1px solid var(--gray-100);
+  }
+  .ig-view-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12.5px; font-weight: 700;
+    background: linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    transition: gap var(--t);
+  }
+  .ig-view-btn:hover { gap: 9px; }
+  .ig-view-btn i { font-size: 13px; background: linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .ig-type-badge {
+    font-size: 11px; font-weight: 600; color: var(--gray-500);
+    display: flex; align-items: center; gap: 4px;
+  }
+  .ig-type-badge i { font-size: 12px; }
+
+  /* ============================================================
+     LOADING SKELETON
+  ============================================================ */
+  .skel-card {
+    background: #fff; border: 1px solid var(--gray-200);
+    border-radius: var(--r-xl); overflow: hidden;
+  }
+  .skel-header { padding: 14px 16px; display: flex; gap: 10px; align-items: center; }
+  .skel-circle { width: 36px; height: 36px; border-radius: 50%; }
+  .skel-line-wrap { flex: 1; display: flex; flex-direction: column; gap: 7px; }
+  .skel-line { border-radius: 6px; }
+  .skel-img { width: 100%; aspect-ratio: 1; }
+  .skel-body { padding: 14px 16px; display: flex; flex-direction: column; gap: 9px; }
+  .skel {
+    background: linear-gradient(90deg, var(--gray-100) 25%, var(--gray-200) 50%, var(--gray-100) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.4s infinite;
+  }
+  @keyframes shimmer { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+
+  /* ============================================================
+     COMING SOON CARD — placeholder untuk posting berikutnya
+  ============================================================ */
+  .coming-card {
+    background: linear-gradient(135deg, var(--navy-mid), var(--navy-light));
+    border: 1.5px dashed rgba(0,201,167,.3);
+    border-radius: var(--r-xl);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 40px 24px; gap: 14px;
+    min-height: 300px;
+    transition: border-color var(--t);
+  }
+  .coming-card:hover { border-color: rgba(0,201,167,.6); }
+  .coming-icon {
+    width: 56px; height: 56px; border-radius: 16px;
+    background: rgba(0,201,167,.12); border: 1px solid rgba(0,201,167,.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; color: var(--teal);
+  }
+  .coming-title { font-family: var(--font-head); font-size: 16px; font-weight: 700; color: #fff; }
+  .coming-desc  { font-size: 13px; color: rgba(255,255,255,.45); line-height: 1.65; max-width: 200px; }
+  .coming-ig-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12.5px; font-weight: 700; color: var(--teal);
+    border: 1px solid rgba(0,201,167,.35);
+    padding: 7px 16px; border-radius: 20px;
+    transition: background var(--t);
+  }
+  .coming-ig-link:hover { background: rgba(0,201,167,.08); }
+
+  /* ============================================================
+     INSTAGRAM CHANNEL BANNER
+  ============================================================ */
+  #ig-channel {
+    background: var(--navy);
+    position: relative; overflow: hidden;
+  }
+  #ig-channel::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 80% at 85% 50%, rgba(131,58,180,.15) 0%, transparent 70%),
+      radial-gradient(ellipse 50% 60% at 10% 40%, rgba(253,29,29,.08) 0%, transparent 60%);
+  }
+  .ig-channel-inner {
+    position: relative; z-index: 1;
+    display: grid; grid-template-columns: 1fr auto;
+    align-items: center; gap: 40px;
+  }
+  .ig-channel-text .eyebrow {
+    font-size: 12px; font-weight: 700; letter-spacing: 1px;
+    text-transform: uppercase;
+    background: linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+  }
+  .ig-channel-text h2 {
+    font-family: var(--font-head); font-size: 30px; font-weight: 700;
+    color: #fff; margin-bottom: 12px; line-height: 1.2;
+  }
+  .ig-channel-text p { font-size: 15px; color: rgba(255,255,255,.55); line-height: 1.75; }
+  .ig-channel-perks { display: flex; flex-direction: column; gap: 10px; margin-top: 20px; }
+  .ig-perk { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: rgba(255,255,255,.6); }
+  .ig-perk i { color: var(--teal); font-size: 14px; }
+  .ig-channel-cta { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+  .ig-big-icon {
+    font-size: 80px;
+    background: linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 30px rgba(253,29,29,.25));
+  }
+  .ig-handle-badge {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12);
+    border-radius: 20px; padding: 8px 18px;
+    font-size: 14px; font-weight: 600; color: rgba(255,255,255,.8);
+  }
+  .ig-handle-badge i { background: linear-gradient(135deg,#833ab4,#fd1d1d,#fcb045); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+
+  /* ============================================================
+     FOOTER
+  ============================================================ */
+  #footer { background: var(--navy); border-top: 1px solid rgba(255,255,255,.06); }
+  .footer-inner {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: 48px; padding: 64px 0 44px;
+  }
+  .footer-brand-logo {
+    display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
+  }
+  .footer-brand-logo-text { font-family: var(--font-head); font-size: 20px; font-weight: 700; }
+  .footer-brand-logo-text .gis  { color: #2E9CFF; }
+  .footer-brand-logo-text .dot  { color: var(--gold); }
+  .footer-brand-logo-text .ight { color: var(--green-light); }
+  .footer-tagline { font-size: 12px; color: rgba(255,255,255,.4); font-style: italic; margin-bottom: 14px; }
+  .footer-brand p {
+    font-size: 13.5px; color: rgba(255,255,255,.42); line-height: 1.75; margin-bottom: 20px;
+  }
+  .footer-socials { display: flex; gap: 8px; }
+  .social-btn {
+    width: 34px; height: 34px; border-radius: 8px;
+    background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.08);
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(255,255,255,.48); font-size: 14px; transition: all var(--t);
+  }
+  .social-btn:hover { background: rgba(255,255,255,.12); color: #fff; }
+  .footer-col h5 { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 18px; }
+  .footer-col ul li { margin-bottom: 9px; }
+  .footer-col ul li a { font-size: 13.5px; color: rgba(255,255,255,.42); transition: color var(--t); }
+  .footer-col ul li a:hover { color: rgba(255,255,255,.85); }
+  .footer-contact { display: flex; flex-direction: column; gap: 12px; }
+  .fc-row {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 13px; color: rgba(255,255,255,.42); line-height: 1.5;
+  }
+  .fc-row i { color: var(--teal); font-size: 14px; margin-top: 2px; flex-shrink: 0; }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,.06);
+    padding: 18px 0;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-bottom p { font-size: 12px; color: rgba(255,255,255,.28); }
+  .footer-bottom-links { display: flex; gap: 20px; }
+  .footer-bottom-links a { font-size: 12px; color: rgba(255,255,255,.28); transition: color var(--t); }
+  .footer-bottom-links a:hover { color: rgba(255,255,255,.6); }
+
+  /* Back to top */
+  #btt {
+    position: fixed; bottom: 24px; right: 24px;
+    width: 42px; height: 42px; border-radius: 50%;
+    background: var(--blue); color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; box-shadow: var(--sh-md);
+    opacity: 0; pointer-events: none; transition: all var(--t); z-index: 99;
+  }
+  #btt.show { opacity: 1; pointer-events: auto; }
+  #btt:hover { background: #155fa0; transform: translateY(-2px); }
+
+  /* Reveal */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity .6s ease, transform .6s ease; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ============================================================
+     RESPONSIVE
+  ============================================================ */
+  @media (max-width: 1024px) {
+    .feed-layout { grid-template-columns: 1fr 1fr; }
+    .footer-inner { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .ig-channel-inner { grid-template-columns: 1fr; text-align: center; }
+    .ig-channel-cta { flex-direction: row; justify-content: center; }
+  }
+  @media (max-width: 768px) {
+    .nav-links, .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    .feed-layout { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr; gap: 24px; }
+    .footer-bottom { flex-direction: column; gap: 10px; }
+    .page-hero-inner { flex-direction: column; }
+    .page-hero-stats { flex-direction: row; flex-wrap: wrap; gap: 8px; }
+    .ph-stat { flex: 1; min-width: 140px; }
+    .ig-follow-banner { flex-direction: column; align-items: flex-start; gap: 10px; }
+  }
+  @media (max-width: 480px) {
+    .page-hero-title { font-size: 26px; }
+    .filter-btn { font-size: 12px; padding: 6px 12px; }
+  }
+  </style>
+</head>
+<body>
+
+<!-- ============================================================
+     NAVBAR
+============================================================ -->
+<nav id="navbar">
+  <div class="container">
+    <div class="nav-inner">
+      <a href="index.html" class="nav-logo">
+        <svg class="nav-logo-img" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" aria-label="GIS.ight Logo">
+          <defs>
+            <radialGradient id="globeGrad" cx="38%" cy="35%" r="65%">
+              <stop offset="0%"   stop-color="#3bcfff"/>
+              <stop offset="45%"  stop-color="#1a7ad4"/>
+              <stop offset="100%" stop-color="#0d3a8a"/>
+            </radialGradient>
+            <radialGradient id="landGrad" cx="40%" cy="30%" r="70%">
+              <stop offset="0%"   stop-color="#52d68a"/>
+              <stop offset="100%" stop-color="#1a7a3c"/>
+            </radialGradient>
+            <clipPath id="globeClip"><circle cx="20" cy="20" r="14.5"/></clipPath>
+          </defs>
+          <circle cx="20" cy="20" r="14.5" fill="url(#globeGrad)"/>
+          <g clip-path="url(#globeClip)">
+            <path d="M18 7 Q24 6 28 10 Q31 13 30 17 Q29 20 26 21 Q23 23 22 26 Q21 28 20 30 Q18 28 17 24 Q16 20 14 18 Q12 15 13 11 Z" fill="url(#landGrad)" opacity=".9"/>
+            <path d="M8 11 Q11 9 13 12 Q14 15 12 19 Q10 22 9 25 Q8 22 7 18 Q6 14 8 11Z" fill="url(#landGrad)" opacity=".85"/>
+            <path d="M27 24 Q30 23 31 26 Q31 28 29 29 Q27 29 26 27 Z" fill="url(#landGrad)" opacity=".8"/>
+          </g>
+          <g clip-path="url(#globeClip)" stroke="rgba(255,255,255,0.35)" stroke-width="0.6" fill="none">
+            <ellipse cx="20" cy="20" rx="14.5" ry="5.5"/>
+            <ellipse cx="20" cy="20" rx="14.5" ry="10"/>
+            <ellipse cx="20" cy="20" rx="5.5"  ry="14.5"/>
+            <ellipse cx="20" cy="20" rx="10"   ry="14.5"/>
+          </g>
+          <circle cx="20" cy="20" r="14.5" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="0.7"/>
+          <ellipse cx="20" cy="20" rx="19" ry="7" fill="none" stroke="#3cd89a" stroke-width="1.2" stroke-dasharray="3.5 2.5" opacity=".85" transform="rotate(-30,20,20)"/>
+          <circle cx="9.5" cy="16.5" r="2" fill="#3cd89a" opacity=".9"/>
+          <circle cx="32" cy="22.5" r="1.6" fill="#f5c518" opacity=".95"/>
+          <ellipse cx="15" cy="14" rx="4" ry="2.5" fill="rgba(255,255,255,0.18)" transform="rotate(-20,15,14)"/>
+        </svg>
+        <div>
+          <div class="nav-logo-text">
+            <span class="gis">GIS</span><span class="dot">.</span><span class="ight">ight</span>
+          </div>
+          <div class="nav-tagline">Where Data Meets The Earth</div>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="index.html#about">Tentang</a></li>
+        <li><a href="informasi.html" class="active">Informasi</a></li>
+        <li><a href="index.html#webgis-teaser">WebGIS</a></li>
+        <li><a href="index.html#publikasi">Publikasi</a></li>
+        <li><a href="index.html#kontak">Kontak</a></li>
+      </ul>
+
+      <div class="nav-cta">
+        <a href="https://www.instagram.com/gis.ight/" target="_blank" class="btn btn-ig btn-sm">
+          <i class="fa-brands fa-instagram"></i> Ikuti @gis.ight
+        </a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html">Home</a>
+  <a href="index.html#about">Tentang Kami</a>
+  <a href="informasi.html">Informasi</a>
+  <a href="index.html#webgis-teaser">WebGIS</a>
+  <a href="index.html#publikasi">Publikasi</a>
+  <a href="index.html#kontak">Kontak</a>
+  <a href="https://www.instagram.com/gis.ight/" target="_blank" class="btn btn-ig">
+    <i class="fa-brands fa-instagram"></i> Ikuti @gis.ight
+  </a>
+</div>
+
+<!-- ============================================================
+     PAGE HERO
+============================================================ -->
+<section id="page-hero">
+  <div class="container">
+    <div class="page-hero-inner">
+
+      <!-- Kiri -->
+      <div class="page-hero-left">
+        <div class="page-hero-breadcrumb">
+          <a href="index.html">Home</a>
+          <i class="fa-solid fa-chevron-right"></i>
+          <span style="color:var(--teal)">Informasi</span>
+        </div>
+        <div class="page-hero-eyebrow">
+          <div class="dot-live"></div>
+          Konten Terbaru dari Instagram
+        </div>
+        <h1 class="page-hero-title">
+          Infografis &<br><span>Edukasi Geospasial</span>
+        </h1>
+        <p class="page-hero-desc">
+          Kumpulan poster, infografis, dan konten edukatif seputar Penginderaan Jauh, GIS, dan Analisis Spasial — langsung dari feed Instagram <strong style="color:rgba(255,255,255,.8)">@gis.ight</strong>.
+        </p>
+
+        <!-- Instagram follow banner -->
+        <div class="ig-follow-banner">
+          <i class="fa-brands fa-instagram"></i>
+          <div class="ig-follow-text">
+            <strong>Ikuti @gis.ight di Instagram</strong>
+            <span>Konten baru setiap minggu — gratis dan terbuka untuk semua</span>
+          </div>
+          <a href="https://www.instagram.com/gis.ight/" target="_blank" class="ig-follow-btn">
+            <i class="fa-brands fa-instagram"></i> Follow
+          </a>
+        </div>
+      </div>
+
+      <!-- Kanan — stats -->
+      <div class="page-hero-stats">
+        <div class="ph-stat">
+          <div class="ph-stat-icon teal"><i class="fa-solid fa-images"></i></div>
+          <div>
+            <div class="ph-stat-num">50+</div>
+            <div class="ph-stat-lbl">Konten Informatif</div>
+          </div>
+        </div>
+        <div class="ph-stat">
+          <div class="ph-stat-icon blue"><i class="fa-solid fa-satellite"></i></div>
+          <div>
+            <div class="ph-stat-num">4</div>
+            <div class="ph-stat-lbl">Topik Utama GIS & RS</div>
+          </div>
+        </div>
+        <div class="ph-stat">
+          <div class="ph-stat-icon ig"><i class="fa-brands fa-instagram"></i></div>
+          <div>
+            <div class="ph-stat-num">@gis.ight</div>
+            <div class="ph-stat-lbl">Update Mingguan</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FILTER BAR
+============================================================ -->
+<div id="filter-bar">
+  <div class="container">
+    <div class="filter-inner">
+      <button class="filter-btn active" data-filter="all">
+        <i class="fa-solid fa-grid-2"></i> Semua
+      </button>
+      <button class="filter-btn" data-filter="rs">
+        <i class="fa-solid fa-satellite"></i> Remote Sensing
+      </button>
+      <button class="filter-btn" data-filter="gis">
+        <i class="fa-solid fa-map"></i> GIS & Pemetaan
+      </button>
+      <button class="filter-btn" data-filter="tutorial">
+        <i class="fa-solid fa-book-open"></i> Tutorial
+      </button>
+      <button class="filter-btn" data-filter="analisis">
+        <i class="fa-solid fa-chart-area"></i> Analisis Spasial
+      </button>
+      <button class="filter-btn" data-filter="infografis">
+        <i class="fa-solid fa-chart-bar"></i> Infografis
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================================
+     FEED INFORMASI
+============================================================ -->
+<section id="informasi-feed" class="section-pad">
+  <div class="container">
+
+    <div class="section-header reveal">
+      <div class="eyebrow">Feed Instagram @gis.ight</div>
+      <h2>Konten Informatif Geospasial</h2>
+      <p>Setiap postingan membawa pengetahuan baru tentang dunia penginderaan jauh dan GIS — dari konsep dasar hingga analisis lanjutan.</p>
+    </div>
+
+    <!-- POST GRID -->
+    <div class="feed-layout" id="feedGrid">
+
+      <!-- ===== POST 1 ===== -->
+      <div class="ig-post-card reveal" data-category="rs infografis">
+        <div class="ig-card-header">
+          <div class="ig-avatar">G</div>
+          <div>
+            <div class="ig-username">GIS.ight</div>
+            <div class="ig-handle">@gis.ight</div>
+          </div>
+          <i class="fa-brands fa-instagram ig-logo-badge"></i>
+        </div>
+
+        <!-- Instagram Embed Postingan 1 -->
+        <div class="ig-embed-wrap">
+          <blockquote class="instagram-media"
+            data-instgrm-captioned
+            data-instgrm-permalink="https://www.instagram.com/p/DUPlRRRj1ih/?utm_source=ig_embed"
+            data-instgrm-version="14"
+            style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;max-width:100%;min-width:326px;padding:0;width:100%">
+            <div style="padding:16px;">
+              <a href="https://www.instagram.com/p/DUPlRRRj1ih/?utm_source=ig_embed" target="_blank"
+                style="background:#FFFFFF;line-height:0;padding:0 0;text-align:center;text-decoration:none;width:100%">
+                <div style="display:flex;flex-direction:row;align-items:center;">
+                  <div style="background-color:#F4F4F4;border-radius:50%;flex-grow:0;height:40px;margin-right:14px;width:40px;"></div>
+                  <div style="display:flex;flex-direction:column;flex-grow:1;justify-content:center;">
+                    <div style="background-color:#F4F4F4;border-radius:4px;flex-grow:0;height:14px;margin-bottom:6px;width:100px;"></div>
+                    <div style="background-color:#F4F4F4;border-radius:4px;flex-grow:0;height:14px;width:60px;"></div>
+                  </div>
+                </div>
+                <div style="padding:19% 0;"></div>
+                <div style="display:block;height:50px;margin:0 auto 12px;width:50px;">
+                  <svg width="50px" height="50px" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="none" fill-rule="evenodd">
+                      <g transform="translate(-511 -1076)" fill="#000">
+                        <path d="M556.869 30.41c-.01-.12-.01-.24-.01-.36v-1.8c0-3.94-3.2-7.14-7.14-7.14h-16.87c-3.94 0-7.14 3.2-7.14 7.14v16.87c0 3.94 3.2 7.14 7.14 7.14h16.87c3.94 0 7.14-3.2 7.14-7.14V28.6c0-.04 0-.08-.01-.12l.01-.07zm-7.3 16.2h-16.87a4.96 4.96 0 0 1-4.96-4.95V28.81a4.96 4.96 0 0 1 4.96-4.95h16.87a4.96 4.96 0 0 1 4.96 4.95V41.66a4.96 4.96 0 0 1-4.96 4.95zM540 35.23c0-2.9 2.36-5.26 5.26-5.26s5.26 2.36 5.26 5.26-2.36 5.26-5.26 5.26-5.26-2.36-5.26-5.26zm5.26-3.08a3.08 3.08 0 1 0 0 6.16 3.08 3.08 0 0 0 0-6.16zm5.46-3.23a1.22 1.22 0 1 1 0 2.44 1.22 1.22 0 0 1 0-2.44z" transform="translate(511 1076)"/>
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+                <div style="padding-top:8px;">
+                  <div style="color:#3897f0;font-family:Arial,sans-serif;font-size:14px;font-style:normal;font-weight:550;line-height:18px;">Lihat postingan ini di Instagram</div>
+                </div>
+              </a>
+            </div>
+          </blockquote>
+        </div>
+
+        <div class="ig-card-footer">
+          <div class="ig-card-meta">
+            <div class="ig-card-tags">
+              <span class="tag tag-teal">Remote Sensing</span>
+              <span class="tag tag-green">Infografis</span>
+            </div>
+            <span class="ig-card-date">2025</span>
+          </div>
+          <div class="ig-card-cta">
+            <a href="https://www.instagram.com/p/DUPlRRRj1ih/" target="_blank" class="ig-view-btn">
+              Lihat di Instagram <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <span class="ig-type-badge"><i class="fa-solid fa-image"></i> Post</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== POST 2 ===== -->
+      <div class="ig-post-card reveal" data-category="gis infografis">
+        <div class="ig-card-header">
+          <div class="ig-avatar">G</div>
+          <div>
+            <div class="ig-username">GIS.ight</div>
+            <div class="ig-handle">@gis.ight</div>
+          </div>
+          <i class="fa-brands fa-instagram ig-logo-badge"></i>
+        </div>
+
+        <!-- Instagram Embed Postingan 2 -->
+        <div class="ig-embed-wrap">
+          <blockquote class="instagram-media"
+            data-instgrm-captioned
+            data-instgrm-permalink="https://www.instagram.com/p/DUU7G59D8gg/?utm_source=ig_embed"
+            data-instgrm-version="14"
+            style="background:#FFF;border:0;border-radius:3px;box-shadow:0 0 1px 0 rgba(0,0,0,0.5),0 1px 10px 0 rgba(0,0,0,0.15);margin:0;max-width:100%;min-width:326px;padding:0;width:100%">
+            <div style="padding:16px;">
+              <a href="https://www.instagram.com/p/DUU7G59D8gg/?utm_source=ig_embed" target="_blank"
+                style="background:#FFFFFF;line-height:0;padding:0 0;text-align:center;text-decoration:none;width:100%">
+                <div style="display:flex;flex-direction:row;align-items:center;">
+                  <div style="background-color:#F4F4F4;border-radius:50%;flex-grow:0;height:40px;margin-right:14px;width:40px;"></div>
+                  <div style="display:flex;flex-direction:column;flex-grow:1;justify-content:center;">
+                    <div style="background-color:#F4F4F4;border-radius:4px;flex-grow:0;height:14px;margin-bottom:6px;width:100px;"></div>
+                    <div style="background-color:#F4F4F4;border-radius:4px;flex-grow:0;height:14px;width:60px;"></div>
+                  </div>
+                </div>
+                <div style="padding:19% 0;"></div>
+                <div style="display:block;height:50px;margin:0 auto 12px;width:50px;">
+                  <svg width="50px" height="50px" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                    <g fill="none" fill-rule="evenodd">
+                      <g transform="translate(-511 -1076)" fill="#000">
+                        <path d="M556.869 30.41c-.01-.12-.01-.24-.01-.36v-1.8c0-3.94-3.2-7.14-7.14-7.14h-16.87c-3.94 0-7.14 3.2-7.14 7.14v16.87c0 3.94 3.2 7.14 7.14 7.14h16.87c3.94 0 7.14-3.2 7.14-7.14V28.6c0-.04 0-.08-.01-.12l.01-.07zm-7.3 16.2h-16.87a4.96 4.96 0 0 1-4.96-4.95V28.81a4.96 4.96 0 0 1 4.96-4.95h16.87a4.96 4.96 0 0 1 4.96 4.95V41.66a4.96 4.96 0 0 1-4.96 4.95zM540 35.23c0-2.9 2.36-5.26 5.26-5.26s5.26 2.36 5.26 5.26-2.36 5.26-5.26 5.26-5.26-2.36-5.26-5.26zm5.26-3.08a3.08 3.08 0 1 0 0 6.16 3.08 3.08 0 0 0 0-6.16zm5.46-3.23a1.22 1.22 0 1 1 0 2.44 1.22 1.22 0 0 1 0-2.44z" transform="translate(511 1076)"/>
+                      </g>
+                    </g>
+                  </svg>
+                </div>
+                <div style="padding-top:8px;">
+                  <div style="color:#3897f0;font-family:Arial,sans-serif;font-size:14px;font-style:normal;font-weight:550;line-height:18px;">Lihat postingan ini di Instagram</div>
+                </div>
+              </a>
+            </div>
+          </blockquote>
+        </div>
+
+        <div class="ig-card-footer">
+          <div class="ig-card-meta">
+            <div class="ig-card-tags">
+              <span class="tag tag-blue">GIS</span>
+              <span class="tag tag-green">Infografis</span>
+            </div>
+            <span class="ig-card-date">2025</span>
+          </div>
+          <div class="ig-card-cta">
+            <a href="https://www.instagram.com/p/DUU7G59D8gg/" target="_blank" class="ig-view-btn">
+              Lihat di Instagram <i class="fa-solid fa-arrow-right"></i>
+            </a>
+            <span class="ig-type-badge"><i class="fa-solid fa-image"></i> Post</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== COMING SOON — placeholder postingan berikutnya ===== -->
+      <div class="coming-card reveal" data-category="all">
+        <div class="coming-icon"><i class="fa-solid fa-plus"></i></div>
+        <div class="coming-title">Konten Berikutnya</div>
+        <p class="coming-desc">Postingan baru sedang disiapkan. Ikuti Instagram kami untuk notifikasi pertama.</p>
+        <a href="https://www.instagram.com/gis.ight/" target="_blank" class="coming-ig-link">
+          <i class="fa-brands fa-instagram"></i> @gis.ight
+        </a>
+      </div>
+
+    </div><!-- /feed-layout -->
+
+    <!-- Cara menambah postingan baru — catatan tersembunyi untuk developer -->
+    <!--
+      CARA MENAMBAH POSTINGAN BARU:
+      1. Salin blok <div class="ig-post-card reveal"> beserta isinya
+      2. Ganti URL di data-instgrm-permalink dengan link postingan Instagram baru
+      3. Sesuaikan tag (tag-teal, tag-blue, tag-green, tag-purple, tag-amber)
+      4. Update data-category untuk filter (rs / gis / tutorial / analisis / infografis)
+      5. Simpan file — embed akan otomatis muat dari Instagram
+    -->
+
+    <div style="text-align:center;margin-top:48px;" class="reveal">
+      <a href="https://www.instagram.com/gis.ight/" target="_blank" class="btn btn-ig">
+        <i class="fa-brands fa-instagram"></i>
+        Lihat Semua di Instagram
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     INSTAGRAM CHANNEL BANNER
+============================================================ -->
+<section id="ig-channel" class="section-pad">
+  <div class="container">
+    <div class="ig-channel-inner reveal">
+      <div class="ig-channel-text">
+        <div class="eyebrow">Media Sosial Kami</div>
+        <h2>Tetap Terhubung dengan<br>Dunia Geospasial</h2>
+        <p>Ikuti akun Instagram <strong style="color:rgba(255,255,255,.8)">@gis.ight</strong> untuk mendapatkan konten infografis, tips GIS, dan update analisis spasial terbaru langsung di feed Anda.</p>
+        <div class="ig-channel-perks">
+          <div class="ig-perk"><i class="fa-solid fa-check"></i> Infografis penginderaan jauh mingguan</div>
+          <div class="ig-perk"><i class="fa-solid fa-check"></i> Tips & trik QGIS dan Google Earth Engine</div>
+          <div class="ig-perk"><i class="fa-solid fa-check"></i> Poster analisis spasial berbasis data real</div>
+          <div class="ig-perk"><i class="fa-solid fa-check"></i> Update riset dan WebGIS terbaru</div>
+        </div>
+      </div>
+      <div class="ig-channel-cta">
+        <i class="fa-brands fa-instagram ig-big-icon"></i>
+        <div class="ig-handle-badge">
+          <i class="fa-brands fa-instagram"></i> @gis.ight
+        </div>
+        <a href="https://www.instagram.com/gis.ight/" target="_blank" class="btn btn-ig" style="width:100%;justify-content:center;">
+          <i class="fa-brands fa-instagram"></i> Ikuti Sekarang
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer id="footer">
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="footer-brand-logo">
+          <svg width="42" height="42" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" style="border-radius:10px;background:rgba(255,255,255,0.06);padding:3px;flex-shrink:0">
+            <defs>
+              <radialGradient id="fGlobeG" cx="38%" cy="35%" r="65%">
+                <stop offset="0%"   stop-color="#3bcfff"/>
+                <stop offset="45%"  stop-color="#1a7ad4"/>
+                <stop offset="100%" stop-color="#0d3a8a"/>
+              </radialGradient>
+              <radialGradient id="fLandG" cx="40%" cy="30%" r="70%">
+                <stop offset="0%"   stop-color="#52d68a"/>
+                <stop offset="100%" stop-color="#1a7a3c"/>
+              </radialGradient>
+              <clipPath id="fClip"><circle cx="20" cy="20" r="14.5"/></clipPath>
+            </defs>
+            <circle cx="20" cy="20" r="14.5" fill="url(#fGlobeG)"/>
+            <g clip-path="url(#fClip)">
+              <path d="M18 7 Q24 6 28 10 Q31 13 30 17 Q29 20 26 21 Q23 23 22 26 Q21 28 20 30 Q18 28 17 24 Q16 20 14 18 Q12 15 13 11 Z" fill="url(#fLandG)" opacity=".9"/>
+              <path d="M8 11 Q11 9 13 12 Q14 15 12 19 Q10 22 9 25 Q8 22 7 18 Q6 14 8 11Z" fill="url(#fLandG)" opacity=".85"/>
+              <path d="M27 24 Q30 23 31 26 Q31 28 29 29 Q27 29 26 27 Z" fill="url(#fLandG)" opacity=".8"/>
+            </g>
+            <g clip-path="url(#fClip)" stroke="rgba(255,255,255,0.35)" stroke-width="0.6" fill="none">
+              <ellipse cx="20" cy="20" rx="14.5" ry="5.5"/>
+              <ellipse cx="20" cy="20" rx="14.5" ry="10"/>
+              <ellipse cx="20" cy="20" rx="5.5"  ry="14.5"/>
+              <ellipse cx="20" cy="20" rx="10"   ry="14.5"/>
+            </g>
+            <circle cx="20" cy="20" r="14.5" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="0.7"/>
+            <ellipse cx="20" cy="20" rx="19" ry="7" fill="none" stroke="#3cd89a" stroke-width="1.2" stroke-dasharray="3.5 2.5" opacity=".85" transform="rotate(-30,20,20)"/>
+            <circle cx="9.5" cy="16.5" r="2" fill="#3cd89a" opacity=".9"/>
+            <circle cx="32" cy="22.5" r="1.6" fill="#f5c518" opacity=".95"/>
+            <ellipse cx="15" cy="14" rx="4" ry="2.5" fill="rgba(255,255,255,0.18)" transform="rotate(-20,15,14)"/>
+          </svg>
+          <div class="footer-brand-logo-text">
+            <span class="gis">GIS</span><span class="dot">.</span><span class="ight">ight</span>
+          </div>
+        </div>
+        <div class="footer-tagline">Where Data Meets The Earth</div>
+        <p>Platform edukasi dan informasi di bidang Penginderaan Jauh, GIS, dan Analisis Spasial untuk mendukung penelitian, pembelajaran, dan pengambilan keputusan berbasis data.</p>
+        <div class="footer-socials">
+          <a href="https://www.instagram.com/gis.ight/" target="_blank" class="social-btn" aria-label="Instagram">
+            <i class="fa-brands fa-instagram"></i>
+          </a>
+          <a href="#" class="social-btn" aria-label="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+          <a href="#" class="social-btn" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+          <a href="#" class="social-btn" aria-label="GitHub"><i class="fa-brands fa-github"></i></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h5>Navigasi</h5>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="index.html#about">Tentang Kami</a></li>
+          <li><a href="informasi.html">Informasi</a></li>
+          <li><a href="index.html#webgis-teaser">WebGIS</a></li>
+          <li><a href="index.html#publikasi">Publikasi</a></li>
+          <li><a href="index.html#kontak">Kontak</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h5>Kategori</h5>
+        <ul>
+          <li><a href="informasi.html">Remote Sensing</a></li>
+          <li><a href="informasi.html">GIS & Pemetaan</a></li>
+          <li><a href="informasi.html">Google Earth Engine</a></li>
+          <li><a href="informasi.html">Tutorial QGIS</a></li>
+          <li><a href="informasi.html">Analisis Spasial</a></li>
+          <li><a href="informasi.html">Infografis</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col" id="kontak">
+        <h5>Kontak</h5>
+        <div class="footer-contact">
+          <div class="fc-row">
+            <i class="fa-solid fa-envelope"></i>
+            <span>gisight.edu@gmail.com</span>
+          </div>
+          <div class="fc-row">
+            <i class="fa-brands fa-instagram"></i>
+            <span>@gis.ight</span>
+          </div>
+          <div class="fc-row">
+            <i class="fa-solid fa-location-dot"></i>
+            <span>Palembang, Sumatera Selatan</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2025 GIS.ight — Where Data Meets The Earth</p>
+      <div class="footer-bottom-links">
+        <a href="#">Kebijakan Privasi</a>
+        <a href="#">Syarat & Ketentuan</a>
+        <a href="index.html">Beranda</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Back to top -->
+<button id="btt" aria-label="Kembali ke atas">
+  <i class="fa-solid fa-chevron-up"></i>
+</button>
+
+<!-- ============================================================
+     INSTAGRAM EMBED SCRIPT
+============================================================ -->
+<script async src="https://www.instagram.com/embed.js"></script>
+
+<script>
+// Back to top
+const btt = document.getElementById('btt');
+window.addEventListener('scroll', () => {
+  btt.classList.toggle('show', window.scrollY > 400);
+});
+btt.addEventListener('click', () => window.scrollTo({ top:0, behavior:'smooth' }));
+
+// Hamburger
+const hamburger  = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+});
+mobileMenu.querySelectorAll('a').forEach(a =>
+  a.addEventListener('click', () => {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  })
+);
+
+// Reveal on scroll
+const revealEls = document.querySelectorAll('.reveal');
+const revealObs = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 70);
+      revealObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.1 });
+revealEls.forEach(el => revealObs.observe(el));
+
+// Filter bar
+const filterBtns = document.querySelectorAll('.filter-btn');
+const cards      = document.querySelectorAll('#feedGrid > [data-category]');
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.filter;
+    cards.forEach(card => {
+      const cats = card.dataset.category || '';
+      if (f === 'all' || cats.includes(f)) {
+        card.style.display = '';
+        card.style.animation = 'fadeIn .35s ease';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    // Re-process Instagram embeds after filter
+    if (window.instgrm) window.instgrm.Embeds.process();
+  });
+});
+
+// Re-process Instagram embeds after page load
+window.addEventListener('load', () => {
+  if (window.instgrm) window.instgrm.Embeds.process();
+});
+</script>
+
+</body>
+</html>
