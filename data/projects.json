@@ -100,5 +100,69 @@
     "legendLabels": ["0 (Tidak)", "1.5 (Sedang)", "3 (Berat)"],
     "legendTitle": "Drought Index",
     "tags": ["Drought Index","Komposit","Kekeringan","OKI"]
-  }
+  },
+  {
+  "id": "nbr_pre_oki",
+  "name": "NBR Pre-Fire — OKI 2018",
+  "desc": "Normalized Burn Ratio sebelum kebakaran (2018) dari Landsat 8. Nilai tinggi menunjukkan vegetasi sehat.",
+  "sensor": "Landsat 8 OLI", "tahun": "2018",
+  "lokasi": "Ogan Komering Ilir, Sumatera Selatan", "emoji": "🌿",
+  "tileUrl": "https://earthengine.googleapis.com/v1/projects/wijaya-474816/maps/31b2e29603c87f8e82ac9903c2bec59a-654261ee792bc3a343fc4484081ab288/tiles/{z}/{x}/{y}",
+  "bounds": [[-4.5, 104.5], [-2.5, 106.5]],
+  "stats": {"min":-0.5,"max":1,"mean":0.4,"std":0.2,"bands":1,"width":2048,"height":2048,"nodata":-9999},
+  "legendType": "gradient",
+  "legendPalette": ["#8B4513","#FFFF00","#006400"],
+  "legendLabels": ["-0.5","0.25","1.0"],
+  "legendTitle": "Nilai NBR",
+  "tags": ["NBR","Pre-Fire","Kebakaran","Landsat 8","OKI"]
+},
+{
+  "id": "nbr_post_oki",
+  "name": "NBR Post-Fire — OKI 2020",
+  "desc": "Normalized Burn Ratio setelah kebakaran (2020) dari Landsat 8. Nilai rendah menunjukkan area terdampak kebakaran.",
+  "sensor": "Landsat 8 OLI", "tahun": "2020",
+  "lokasi": "Ogan Komering Ilir, Sumatera Selatan", "emoji": "🔥",
+  "tileUrl": "https://earthengine.googleapis.com/v1/projects/wijaya-474816/maps/7e4fe45313b40b6b7ff18cf57f231d81-bdd03f54d621ecce68ac60dc7b0c9760/tiles/{z}/{x}/{y}",
+  "bounds": [[-4.5, 104.5], [-2.5, 106.5]],
+  "stats": {"min":-0.5,"max":1,"mean":0.2,"std":0.25,"bands":1,"width":2048,"height":2048,"nodata":-9999},
+  "legendType": "gradient",
+  "legendPalette": ["#8B4513","#FFFF00","#006400"],
+  "legendLabels": ["-0.5","0.25","1.0"],
+  "legendTitle": "Nilai NBR",
+  "tags": ["NBR","Post-Fire","Kebakaran","Landsat 8","OKI"]
+},
+{
+  "id": "dnbr_oki",
+  "name": "dNBR — Burn Index OKI 2018–2020",
+  "desc": "Differenced NBR menggambarkan perubahan kondisi vegetasi akibat kebakaran. Nilai positif tinggi = area terbakar parah.",
+  "sensor": "Landsat 8 OLI", "tahun": "2018–2020",
+  "lokasi": "Ogan Komering Ilir, Sumatera Selatan", "emoji": "📉",
+  "tileUrl": "https://earthengine.googleapis.com/v1/projects/wijaya-474816/maps/507db534325d25c89ce4bc5cfe37806f-f823c872f1dc07c9b126b56bccf153ba/tiles/{z}/{x}/{y}",
+  "bounds": [[-4.5, 104.5], [-2.5, 106.5]],
+  "stats": {"min":-0.5,"max":1,"mean":0.2,"std":0.3,"bands":1,"width":2048,"height":2048,"nodata":-9999},
+  "legendType": "gradient",
+  "legendPalette": ["#006400","#FFFF00","#FFA500","#FF0000"],
+  "legendLabels": ["-0.5 (Regrowth)","0.25","1.0 (Terbakar Parah)"],
+  "legendTitle": "Nilai dNBR",
+  "tags": ["dNBR","Kebakaran","Burn Index","Landsat 8","OKI"]
+},
+{
+  "id": "burn_severity_oki",
+  "name": "Burn Severity Classification — OKI",
+  "desc": "Klasifikasi tingkat keparahan kebakaran berbasis dNBR: Tidak Terbakar, Rendah, Sedang, Tinggi.",
+  "sensor": "Landsat 8 OLI", "tahun": "2018–2020",
+  "lokasi": "Ogan Komering Ilir, Sumatera Selatan", "emoji": "🗺️",
+  "tileUrl": "https://earthengine.googleapis.com/v1/projects/wijaya-474816/maps/9f9c899b6ad1e628ec1d494d8cca3186-a7d5e59cc237871ae58010c60b694db6/tiles/{z}/{x}/{y}",
+  "bounds": [[-4.5, 104.5], [-2.5, 106.5]],
+  "stats": {"min":0,"max":3,"mean":1.5,"std":1,"bands":1,"width":2048,"height":2048,"nodata":-1},
+  "legendType": "categorical",
+  "legendItems": [
+    {"color": "#006400", "label": "Tidak Terbakar (dNBR < 0.1)"},
+    {"color": "#FFFF00", "label": "Rendah (0.1–0.27)"},
+    {"color": "#FFA500", "label": "Sedang (0.27–0.44)"},
+    {"color": "#FF0000", "label": "Tinggi (> 0.44)"}
+  ],
+  "legendTitle": "Kelas Burn Severity",
+  "tags": ["Burn Severity","dNBR","Kebakaran","Klasifikasi","OKI"]
+}
 ]
