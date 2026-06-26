@@ -144,20 +144,65 @@ def compute_layers():
              .copyProperties(img, ['system:time_start']))
         .mean().clip(area))
 
+    # ================================================================
+    # dNBR Burn Severity (Landsat 8, OKI)
+    # Pre-fire: 2018 | Post-fire: 2020
+    # ================================================================
+    def prep_sr_l8(image):
+        qa_mask  = image.select('QA_PIXEL').bitwiseAnd(int('11111', 2)).eq(0)
+        sat_mask = image.select('QA_RADSAT').eq(0)
+        scale_names  = ['REFLECTANCE_MULT_BAND_1','REFLECTANCE_MULT_BAND_2','REFLECTANCE_MULT_BAND_3',
+                        'REFLECTANCE_MULT_BAND_4','REFLECTANCE_MULT_BAND_5','REFLECTANCE_MULT_BAND_6',
+                        'REFLECTANCE_MULT_BAND_7']
+        offset_names = ['REFLECTANCE_ADD_BAND_1','REFLECTANCE_ADD_BAND_2','REFLECTANCE_ADD_BAND_3',
+                        'REFLECTANCE_ADD_BAND_4','REFLECTANCE_ADD_BAND_5','REFLECTANCE_ADD_BAND_6',
+                        'REFLECTANCE_ADD_BAND_7']
+        scale_img  = ee.Image.constant(image.toDictionary().select(scale_names).values())
+        offset_img = ee.Image.constant(image.toDictionary().select(offset_names).values())
+        scaled = (image.select(['SR_B1','SR_B2','SR_B3','SR_B4','SR_B5','SR_B6','SR_B7'])
+                  .multiply(scale_img).add(offset_img))
+        return (image.addBands(scaled, None, True)
+                .updateMask(qa_mask).updateMask(sat_mask))
+
+    def get_nbr(image):
+        return image.normalizedDifference(['SR_B5','SR_B7']).rename('NBR')
+
+    pre_fire  = (ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
+        .filterBounds(area).filterDate('2018-01-01','2018-12-31')
+        .map(prep_sr_l8).median())
+    nbr_pre   = get_nbr(pre_fire).clip(area)
+
+    post_fire = (ee.ImageCollection('LANDSAT/LC08/C02/T1_L2')
+        .filterBounds(area).filterDate('2020-01-01','2020-12-31')
+        .map(prep_sr_l8).median())
+    nbr_post  = get_nbr(post_fire).clip(area)
+
+    dnbr = nbr_pre.subtract(nbr_post).rename('dNBR').clip(area)
+
+    burn_severity = (dnbr.expression(
+        "(b('dNBR') < 0.1) ? 0 : (b('dNBR') < 0.27) ? 1 : (b('dNBR') < 0.44) ? 2 : 3"
+    ).rename('Severity').clip(area))
+
     print("✅ Semua layer berhasil dihitung")
 
     return {
-        'lst_modis':       (lst,            {'min':10,   'max':50,  'palette':['#00FF00','#FFFF00','#FFA500','#FF0000']}),
-        'ndvi_mean_oki':   (ndvi_mean,      {'min':0,    'max':1,   'palette':['#8B4513','#FFFF00','#006400']}),
-        'ndvi_anomaly_oki':(ndvi_anom_mean, {'min':-0.2, 'max':0.2, 'palette':['#FF0000','#FFFFFF','#008000']}),
-        'ndvi_class_oki':  (ndvi_class,     {'min':0,    'max':3,   'palette':['#008000','#FFFF00','#FFA500','#FF0000']}),
-        'vci_mean_oki':    (vci_mean,       {'min':0,    'max':100, 'palette':['#FF0000','#FFFF00','#008000']}),
-        'vci_class_oki':   (vci_class,      {'min':0,    'max':3,   'palette':['#008000','#FFFF00','#FFA500','#FF0000']}),
-        'rainfall_mean_oki':(rain_mean,     {'min':0,    'max':300, 'palette':['#FFFFFF','#00BFFF','#00008B']}),
-        'spi_mean_oki':    (spi_mean,       {'min':-2,   'max':2,   'palette':['#FF0000','#FFFFFF','#0000FF']}),
-        'spi_class_oki':   (spi_class,      {'min':0,    'max':3,   'palette':['#008000','#FFFF00','#FFA500','#FF0000']}),
-        'drought_index_oki':(drought_index, {'min':0,    'max':3,   'palette':['#008000','#FFFF00','#FFA500','#FF0000']}),
-        'drought_class_oki':(drought_class, {'min':1,    'max':4,   'palette':['#008000','#FFFF00','#FFA500','#FF0000']}),
+        # Kekeringan OKI
+        'lst_modis':        (lst,            {'min':10,   'max':50,  'palette':['#00FF00','#FFFF00','#FFA500','#FF0000']}),
+        'ndvi_mean_oki':    (ndvi_mean,      {'min':0,    'max':1,   'palette':['#8B4513','#FFFF00','#006400']}),
+        'ndvi_anomaly_oki': (ndvi_anom_mean, {'min':-0.2, 'max':0.2, 'palette':['#FF0000','#FFFFFF','#008000']}),
+        'ndvi_class_oki':   (ndvi_class,     {'min':0,    'max':3,   'palette':['#008000','#FFFF00','#FFA500','#FF0000']}),
+        'vci_mean_oki':     (vci_mean,       {'min':0,    'max':100, 'palette':['#FF0000','#FFFF00','#008000']}),
+        'vci_class_oki':    (vci_class,      {'min':0,    'max':3,   'palette':['#008000','#FFFF00','#FFA500','#FF0000']}),
+        'rainfall_mean_oki':(rain_mean,      {'min':0,    'max':300, 'palette':['#FFFFFF','#00BFFF','#00008B']}),
+        'spi_mean_oki':     (spi_mean,       {'min':-2,   'max':2,   'palette':['#FF0000','#FFFFFF','#0000FF']}),
+        'spi_class_oki':    (spi_class,      {'min':0,    'max':3,   'palette':['#008000','#FFFF00','#FFA500','#FF0000']}),
+        'drought_index_oki':(drought_index,  {'min':0,    'max':3,   'palette':['#008000','#FFFF00','#FFA500','#FF0000']}),
+        'drought_class_oki':(drought_class,  {'min':1,    'max':4,   'palette':['#008000','#FFFF00','#FFA500','#FF0000']}),
+        # dNBR Burn Severity OKI
+        'nbr_pre_oki':      (nbr_pre,        {'min':-0.5, 'max':1,   'palette':['#8B4513','#FFFF00','#006400']}),
+        'nbr_post_oki':     (nbr_post,       {'min':-0.5, 'max':1,   'palette':['#8B4513','#FFFF00','#006400']}),
+        'dnbr_oki':         (dnbr,           {'min':-0.5, 'max':1,   'palette':['#006400','#FFFF00','#FFA500','#FF0000']}),
+        'burn_severity_oki':(burn_severity,  {'min':0,    'max':3,   'palette':['#006400','#FFFF00','#FFA500','#FF0000']}),
     }
 
 # ================================================================
@@ -379,6 +424,75 @@ def build_projects_json(urls):
             ],
             "legendTitle": "Kelas Kekeringan",
             "tags": ["Kekeringan","Klasifikasi Final","OKI","Sumatera Selatan"],
+            "lastRefresh": now
+        },
+        # ── dNBR Burn Severity ─────────────────────────────────────
+        {
+            "id": "nbr_pre_oki",
+            "name": "NBR Pre-Fire — OKI 2018",
+            "desc": "Normalized Burn Ratio sebelum kebakaran (2018) dari Landsat 8. Nilai tinggi menunjukkan vegetasi sehat dan lebat.",
+            "sensor": "Landsat 8 OLI", "tahun": "2018",
+            "lokasi": "Ogan Komering Ilir, Sumatera Selatan", "emoji": "🌿",
+            "tileUrl": url("nbr_pre_oki"),
+            "bounds": [[-4.5, 104.5], [-2.5, 106.5]],
+            "stats": {"min":-0.5,"max":1,"mean":0.4,"std":0.2,"bands":1,"width":2048,"height":2048,"nodata":-9999},
+            "legendType": "gradient",
+            "legendPalette": ["#8B4513","#FFFF00","#006400"],
+            "legendLabels": ["-0.5","0.25","1.0"],
+            "legendTitle": "Nilai NBR",
+            "tags": ["NBR","Pre-Fire","Kebakaran","Landsat 8","OKI"],
+            "lastRefresh": now
+        },
+        {
+            "id": "nbr_post_oki",
+            "name": "NBR Post-Fire — OKI 2020",
+            "desc": "Normalized Burn Ratio setelah kebakaran (2020) dari Landsat 8. Nilai rendah (coklat) menunjukkan area yang terdampak kebakaran.",
+            "sensor": "Landsat 8 OLI", "tahun": "2020",
+            "lokasi": "Ogan Komering Ilir, Sumatera Selatan", "emoji": "🔥",
+            "tileUrl": url("nbr_post_oki"),
+            "bounds": [[-4.5, 104.5], [-2.5, 106.5]],
+            "stats": {"min":-0.5,"max":1,"mean":0.2,"std":0.25,"bands":1,"width":2048,"height":2048,"nodata":-9999},
+            "legendType": "gradient",
+            "legendPalette": ["#8B4513","#FFFF00","#006400"],
+            "legendLabels": ["-0.5","0.25","1.0"],
+            "legendTitle": "Nilai NBR",
+            "tags": ["NBR","Post-Fire","Kebakaran","Landsat 8","OKI"],
+            "lastRefresh": now
+        },
+        {
+            "id": "dnbr_oki",
+            "name": "dNBR — Burn Index OKI 2018–2020",
+            "desc": "Differenced NBR (dNBR = NBR Pre - NBR Post) menggambarkan perubahan kondisi vegetasi akibat kebakaran. Nilai positif tinggi menunjukkan area terbakar parah.",
+            "sensor": "Landsat 8 OLI", "tahun": "2018–2020",
+            "lokasi": "Ogan Komering Ilir, Sumatera Selatan", "emoji": "📉",
+            "tileUrl": url("dnbr_oki"),
+            "bounds": [[-4.5, 104.5], [-2.5, 106.5]],
+            "stats": {"min":-0.5,"max":1,"mean":0.2,"std":0.3,"bands":1,"width":2048,"height":2048,"nodata":-9999},
+            "legendType": "gradient",
+            "legendPalette": ["#006400","#FFFF00","#FFA500","#FF0000"],
+            "legendLabels": ["-0.5 (Regrowth)","0.25","1.0 (Terbakar Parah)"],
+            "legendTitle": "Nilai dNBR",
+            "tags": ["dNBR","Kebakaran","Burn Index","Landsat 8","OKI"],
+            "lastRefresh": now
+        },
+        {
+            "id": "burn_severity_oki",
+            "name": "Burn Severity Classification — OKI",
+            "desc": "Klasifikasi tingkat keparahan kebakaran berbasis dNBR: Tidak Terbakar, Rendah, Sedang, Tinggi. Analisis dampak kebakaran OKI 2018–2020.",
+            "sensor": "Landsat 8 OLI", "tahun": "2018–2020",
+            "lokasi": "Ogan Komering Ilir, Sumatera Selatan", "emoji": "🗺️",
+            "tileUrl": url("burn_severity_oki"),
+            "bounds": [[-4.5, 104.5], [-2.5, 106.5]],
+            "stats": {"min":0,"max":3,"mean":1.5,"std":1,"bands":1,"width":2048,"height":2048,"nodata":-1},
+            "legendType": "categorical",
+            "legendItems": [
+                {"color": "#006400", "label": "Tidak Terbakar (dNBR < 0.1)"},
+                {"color": "#FFFF00", "label": "Rendah (0.1–0.27)"},
+                {"color": "#FFA500", "label": "Sedang (0.27–0.44)"},
+                {"color": "#FF0000", "label": "Tinggi (> 0.44)"}
+            ],
+            "legendTitle": "Kelas Burn Severity",
+            "tags": ["Burn Severity","dNBR","Kebakaran","Klasifikasi","OKI"],
             "lastRefresh": now
         }
     ]
