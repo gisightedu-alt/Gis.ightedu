@@ -1,0 +1,35 @@
+name: 🔄 Auto-Refresh GEE Tile URLs
+
+on:
+  # Jalankan otomatis setiap 90 menit
+  schedule:
+    - cron: '0 */1 * * *'   # setiap 1 jam (URL GEE valid ~2 jam)
+
+  # Bisa juga dijalankan manual dari tab Actions
+  workflow_dispatch:
+
+jobs:
+  refresh-tiles:
+    runs-on: ubuntu-latest
+    name: Refresh GEE Tile URLs
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install dependencies
+        run: |
+          pip install earthengine-api requests
+
+      - name: 🔄 Run tile refresh script
+        env:
+          GEE_SERVICE_ACCOUNT: ${{ secrets.GEE_SERVICE_ACCOUNT }}
+          GEE_KEY_JSON:        ${{ secrets.GEE_KEY_JSON }}
+          GH_TOKEN:            ${{ secrets.GH_TOKEN }}
+        run: |
+          python refresh_tiles.py
